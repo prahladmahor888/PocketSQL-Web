@@ -190,9 +190,6 @@
         {{ $slot }}
     </main>
 
-    <!-- Screenshot Modal Component -->
-    <x-screenshot-modal />
-
     <!-- Footer Component -->
     <x-footer />
 

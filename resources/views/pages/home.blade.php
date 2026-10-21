@@ -137,7 +137,7 @@
     <!-- 2. QUICK FEATURES GRID (6 CARDS - MAX 10PX RADIUS) -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-3 reveal-on-scroll">
                 <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-[10px] border border-blue-200">Engine Architecture</span>
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Engineered for Pure Performance on Mobile</h2>
                 <p class="text-base text-slate-600">
@@ -148,8 +148,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
                 <!-- Feature 1 -->
-                <x-card class="space-y-3">
-                    <div class="w-10 h-10 rounded-[10px] bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-base">
+                <x-card class="space-y-3 reveal-on-scroll reveal-delay-1 hover-lift">
+                    <div class="w-10 h-10 rounded-[10px] bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-base transition-transform group-hover:scale-110">
                         <i class="fa-solid fa-database"></i>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900">Embedded SQL Engine</h3>
@@ -159,8 +159,8 @@
                 </x-card>
 
                 <!-- Feature 2 -->
-                <x-card class="space-y-3">
-                    <div class="w-10 h-10 rounded-[10px] bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-base">
+                <x-card class="space-y-3 reveal-on-scroll reveal-delay-2 hover-lift">
+                    <div class="w-10 h-10 rounded-[10px] bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-base transition-transform group-hover:scale-110">
                         <i class="fa-solid fa-terminal"></i>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900">Interactive Terminal CLI</h3>
@@ -170,8 +170,8 @@
                 </x-card>
 
                 <!-- Feature 3 -->
-                <x-card class="space-y-3">
-                    <div class="w-10 h-10 rounded-[10px] bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-base">
+                <x-card class="space-y-3 reveal-on-scroll reveal-delay-3 hover-lift">
+                    <div class="w-10 h-10 rounded-[10px] bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-base transition-transform group-hover:scale-110">
                         <i class="fa-solid fa-network-wired"></i>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900">Background REST API</h3>
@@ -181,8 +181,8 @@
                 </x-card>
 
                 <!-- Feature 4 -->
-                <x-card class="space-y-3">
-                    <div class="w-10 h-10 rounded-[10px] bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-base">
+                <x-card class="space-y-3 reveal-on-scroll reveal-delay-1 hover-lift">
+                    <div class="w-10 h-10 rounded-[10px] bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-base transition-transform group-hover:scale-110">
                         <i class="fa-solid fa-table-cells"></i>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900">40+ MySQL System Tables</h3>
@@ -192,8 +192,8 @@
                 </x-card>
 
                 <!-- Feature 5 -->
-                <x-card class="space-y-3">
-                    <div class="w-10 h-10 rounded-[10px] bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-base">
+                <x-card class="space-y-3 reveal-on-scroll reveal-delay-2 hover-lift">
+                    <div class="w-10 h-10 rounded-[10px] bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-base transition-transform group-hover:scale-110">
                         <i class="fa-solid fa-file-export"></i>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900">Multi-Format Exporter</h3>
@@ -203,8 +203,8 @@
                 </x-card>
 
                 <!-- Feature 6 -->
-                <x-card class="space-y-3">
-                    <div class="w-10 h-10 rounded-[10px] bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold text-base">
+                <x-card class="space-y-3 reveal-on-scroll reveal-delay-3 hover-lift">
+                    <div class="w-10 h-10 rounded-[10px] bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold text-base transition-transform group-hover:scale-110">
                         <i class="fa-solid fa-lock"></i>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900">On-Device TLS 1.3</h3>
@@ -215,8 +215,8 @@
 
             </div>
 
-            <div class="text-center mt-10">
-                <a href="{{ route('features') }}" class="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800">
+            <div class="text-center mt-10 reveal-on-scroll">
+                <a href="{{ route('features') }}" class="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800 transition-transform hover:translate-x-1 duration-200">
                     Explore all technical specifications &rarr;
                 </a>
             </div>
@@ -226,7 +226,7 @@
     <!-- 3. APP SCREENSHOTS SHOWCASE (REAL MOBILE SCREENS - CUSTOMIZABLE FROM ADMIN) -->
     <section class="py-20 bg-slate-50 border-y border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4 reveal-on-scroll">
                 <div class="space-y-2">
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-600 bg-white px-3 py-1 rounded-[10px] border border-slate-200">Visual Interface</span>
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Actual App Screenshots Showcase</h2>
@@ -243,27 +243,19 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach($screenshots as $screenshot)
-                    <div class="bg-white border border-slate-200 rounded-[10px] overflow-hidden shadow-sm hover:shadow-md transition duration-200 group cursor-pointer flex flex-col justify-between"
-                         @click="$store.lightbox.open('{{ asset($screenshot->image_path) }}', '{{ $screenshot->title }}', '{{ $screenshot->subtitle }}')">
+                @foreach($screenshots as $index => $screenshot)
+                    <div class="bg-white border border-slate-200 rounded-[10px] overflow-hidden shadow-sm hover-lift hover:shadow-lg transition flex flex-col justify-between reveal-on-scroll reveal-delay-{{ ($index % 4) + 1 }}">
                         
                         <!-- Phone Mockup Container (Realistic 9:18 Screen Ratio) -->
-                        <div class="aspect-[9/18] bg-black relative overflow-hidden flex items-center justify-center p-2">
+                        <div class="aspect-[9/18] bg-black relative overflow-hidden flex items-center justify-center p-2 group">
                             <img src="{{ asset($screenshot->image_path) }}" 
                                  alt="{{ $screenshot->title }}" 
-                                 class="w-full h-full object-contain group-hover:scale-102 transition duration-300">
-                            
-                            <div class="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                                <span class="bg-white/95 backdrop-blur-xs text-slate-900 text-xs font-bold px-3 py-1.5 rounded-[10px] shadow-sm flex items-center space-x-1">
-                                    <i class="fa-solid fa-magnifying-glass-plus text-blue-600 mr-1"></i>
-                                    Inspect Full Screen
-                                </span>
-                            </div>
+                                 class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.03]">
                         </div>
 
                         <!-- Caption -->
                         <div class="p-4 space-y-1.5 bg-white border-t border-slate-100">
-                            <h4 class="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-1">{{ $screenshot->title }}</h4>
+                            <h4 class="text-sm font-bold text-slate-900 line-clamp-1">{{ $screenshot->title }}</h4>
                             <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">{{ $screenshot->subtitle }}</p>
                         </div>
                     </div>
@@ -277,7 +269,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
-                <div class="lg:col-span-5 space-y-5">
+                <div class="lg:col-span-5 space-y-5 reveal-on-scroll">
                     <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-[10px] border border-blue-200">Connect in Seconds</span>
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
                         One Simple REST API. Any Programming Language.
@@ -307,17 +299,17 @@
                 </div>
 
                 <!-- Code Tabs Container (Alpine.js) -->
-                <div class="lg:col-span-7" x-data="{ activeTab: 'python' }">
-                    <div class="bg-slate-900 border border-slate-800 rounded-[10px] shadow-xl overflow-hidden">
+                <div class="lg:col-span-7 reveal-on-scroll reveal-delay-2" x-data="{ activeTab: 'python' }">
+                    <div class="bg-slate-900 border border-slate-800 rounded-[10px] shadow-xl overflow-hidden hover-lift">
                         
                         <!-- Tabs Header -->
                         <div class="flex items-center justify-between px-4 py-2.5 bg-slate-950 border-b border-slate-800">
-                            <div class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto">
+                            <div class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto no-scrollbar py-0.5">
                                 @foreach($codeSnippets as $snippet)
                                     <button type="button"
                                             @click="activeTab = '{{ $snippet->language }}'"
-                                            :class="activeTab === '{{ $snippet->language }}' ? 'bg-blue-600 text-white font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800'"
-                                            class="px-3 py-1.5 text-xs rounded-[8px] transition font-mono whitespace-nowrap">
+                                            :class="activeTab === '{{ $snippet->language }}' ? 'bg-blue-600 text-white font-semibold shadow-xs scale-100' : 'text-slate-400 hover:text-white hover:bg-slate-800'"
+                                            class="px-3 py-1.5 text-xs rounded-[8px] transition font-mono whitespace-nowrap flex-shrink-0 active:scale-95">
                                         {{ $snippet->title }}
                                     </button>
                                 @endforeach
@@ -329,16 +321,19 @@
                                         let currentEl = document.querySelector('#snippet-' + activeTab);
                                         if (currentEl) copyToClipboard(currentEl.innerText, $el);
                                     "
-                                    class="inline-flex items-center px-2.5 py-1 text-xs font-mono text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-[8px] transition ml-2">
+                                    class="inline-flex items-center px-2.5 py-1 text-xs font-mono text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-[8px] transition ml-2 flex-shrink-0 border border-slate-700 active:scale-95">
                                 <i class="fa-regular fa-copy mr-1 text-slate-400"></i>
                                 <span>Copy</span>
                             </button>
                         </div>
 
                         <!-- Code Content Box -->
-                        <div class="p-5 font-mono text-xs leading-relaxed overflow-x-auto text-slate-200 bg-slate-900">
+                        <div class="p-5 font-mono text-xs leading-relaxed overflow-x-auto dark-scrollbar text-slate-200 bg-slate-900 min-h-[220px]">
                             @foreach($codeSnippets as $snippet)
                                 <div x-show="activeTab === '{{ $snippet->language }}'" 
+                                     x-transition:enter="transition ease-out duration-200"
+                                     x-transition:enter-start="opacity-0 translate-y-1"
+                                     x-transition:enter-end="opacity-100 translate-y-0"
                                      x-cloak 
                                      id="snippet-{{ $snippet->language }}">
                                     <pre class="font-mono"><code>{{ $snippet->code_content }}</code></pre>
@@ -361,7 +356,7 @@
     <!-- 4.5 SEO SECTION: ARCHITECTURE COMPARISON TABLE (TARGETING SEARCH INTENT) -->
     <section class="py-20 bg-slate-50 border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-            <div class="text-center max-w-3xl mx-auto space-y-3">
+            <div class="text-center max-w-3xl mx-auto space-y-3 reveal-on-scroll">
                 <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-[10px] border border-blue-200">Comparative Analysis</span>
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Why Developers Choose PocketSQL for Android
@@ -371,7 +366,7 @@
                 </p>
             </div>
 
-            <div class="bg-white border border-slate-200 rounded-[10px] shadow-sm overflow-hidden">
+            <div class="bg-white border border-slate-200 rounded-[10px] shadow-sm overflow-hidden reveal-on-scroll reveal-delay-1 hover-lift">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs min-w-[650px]">
                         <thead class="bg-slate-900 text-white font-mono uppercase text-[11px]">
@@ -450,7 +445,7 @@
 
             <!-- Developer Use Cases Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-6">
-                <div class="bg-white p-5 rounded-[10px] border border-slate-200 shadow-xs space-y-2">
+                <div class="bg-white p-5 rounded-[10px] border border-slate-200 shadow-xs space-y-2 reveal-on-scroll reveal-delay-1 hover-lift">
                     <div class="w-10 h-10 rounded-[8px] bg-blue-50 text-blue-600 flex items-center justify-center text-base">
                         <i class="fa-solid fa-wifi-slash"></i>
                     </div>
@@ -460,7 +455,7 @@
                     </p>
                 </div>
 
-                <div class="bg-white p-5 rounded-[10px] border border-slate-200 shadow-xs space-y-2">
+                <div class="bg-white p-5 rounded-[10px] border border-slate-200 shadow-xs space-y-2 reveal-on-scroll reveal-delay-2 hover-lift">
                     <div class="w-10 h-10 rounded-[8px] bg-emerald-50 text-emerald-600 flex items-center justify-center text-base">
                         <i class="fa-solid fa-laptop-code"></i>
                     </div>
@@ -470,7 +465,7 @@
                     </p>
                 </div>
 
-                <div class="bg-white p-5 rounded-[10px] border border-slate-200 shadow-xs space-y-2">
+                <div class="bg-white p-5 rounded-[10px] border border-slate-200 shadow-xs space-y-2 reveal-on-scroll reveal-delay-3 hover-lift">
                     <div class="w-10 h-10 rounded-[8px] bg-purple-50 text-purple-600 flex items-center justify-center text-base">
                         <i class="fa-solid fa-microchip"></i>
                     </div>
@@ -480,7 +475,7 @@
                     </p>
                 </div>
 
-                <div class="bg-white p-5 rounded-[10px] border border-slate-200 shadow-xs space-y-2">
+                <div class="bg-white p-5 rounded-[10px] border border-slate-200 shadow-xs space-y-2 reveal-on-scroll reveal-delay-4 hover-lift">
                     <div class="w-10 h-10 rounded-[8px] bg-amber-50 text-amber-600 flex items-center justify-center text-base">
                         <i class="fa-solid fa-graduation-cap"></i>
                     </div>
@@ -496,7 +491,7 @@
     <!-- 5. COMMUNITY & SPONSORSHIP CALLOUT BANNER -->
     <section class="py-16 bg-blue-600 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left reveal-on-scroll">
                 <div class="space-y-2 max-w-2xl">
                     <span class="inline-block px-3 py-1 bg-white/20 text-white font-semibold text-xs rounded-[10px]">Independent Open Source</span>
                     <h2 class="text-3xl font-extrabold tracking-tight">Support PocketSQL Development</h2>
@@ -505,11 +500,11 @@
                     </p>
                 </div>
                 <div class="flex flex-wrap items-center justify-center gap-3">
-                    <a href="{{ route('donate') }}" class="px-6 py-3 bg-white text-rose-600 font-extrabold rounded-[10px] text-sm hover:bg-rose-50 shadow-md transition flex items-center space-x-2 group">
+                    <a href="{{ route('donate') }}" class="px-6 py-3 bg-white text-rose-600 font-extrabold rounded-[10px] text-sm hover:bg-rose-50 shadow-md transition flex items-center space-x-2 group hover-lift active:scale-95">
                         <i class="fa-solid fa-heart text-rose-500 transition-transform group-hover:scale-125"></i>
                         <span>Donate &rarr;</span>
                     </a>
-                    <a href="{{ $settings->github_repo_url ?? 'https://github.com/pocketsql/pocketsql' }}" target="_blank" rel="noopener" class="px-6 py-3 bg-blue-700 text-white font-bold rounded-[10px] text-sm hover:bg-blue-800 border border-blue-500 shadow-sm transition">
+                    <a href="{{ $settings->github_repo_url ?? 'https://github.com/pocketsql/pocketsql' }}" target="_blank" rel="noopener" class="px-6 py-3 bg-blue-700 text-white font-bold rounded-[10px] text-sm hover:bg-blue-800 border border-blue-500 shadow-sm transition hover-lift active:scale-95">
                         <i class="fa-brands fa-github mr-1"></i> Star on GitHub ⭐
                     </a>
                 </div>
@@ -520,7 +515,7 @@
     <!-- 6. TOP FAQS ACCORDION -->
     <section class="py-20 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12 space-y-2">
+            <div class="text-center mb-12 space-y-2 reveal-on-scroll">
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-3 py-1 rounded-[10px] border border-slate-200">Got Questions?</span>
                 <h2 class="text-3xl font-extrabold text-slate-900">Frequently Asked Questions</h2>
                 <p class="text-sm text-slate-600">Quick answers to common questions about running PocketSQL on your device.</p>
@@ -528,23 +523,31 @@
 
             <div class="space-y-3" x-data="{ openFaq: null }">
                 @foreach($topFaqs as $index => $faq)
-                    <div class="border border-slate-200 rounded-[10px] overflow-hidden bg-white">
+                    <div class="border border-slate-200 rounded-[10px] overflow-hidden bg-white reveal-on-scroll reveal-delay-{{ ($index % 5) + 1 }} transition-colors hover:border-slate-300">
                         <button type="button" 
                                 @click="openFaq = (openFaq === {{ $index }} ? null : {{ $index }})"
                                 class="w-full px-5 py-4 text-left flex items-center justify-between text-slate-900 font-bold text-sm sm:text-base hover:bg-slate-50 transition">
                             <span>{{ $faq->question }}</span>
-                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-200 flex-shrink-0 ml-4"
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300 flex-shrink-0 ml-4"
                                :class="openFaq === {{ $index }} ? 'rotate-180 text-blue-600' : ''"></i>
                         </button>
-                        <div x-show="openFaq === {{ $index }}" x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                        <div x-show="openFaq === {{ $index }}" 
+                             x-transition:enter="transition ease-out duration-250"
+                             x-transition:enter-start="opacity-0 -translate-y-2"
+                             x-transition:enter-end="opacity-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 translate-y-0"
+                             x-transition:leave-end="opacity-0 -translate-y-1"
+                             x-cloak 
+                             class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
                             {{ $faq->answer }}
                         </div>
                     </div>
                 @endforeach
             </div>
 
-            <div class="text-center mt-8">
-                <a href="{{ route('faq') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-800">
+            <div class="text-center mt-8 reveal-on-scroll">
+                <a href="{{ route('faq') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-transform hover:translate-x-1 duration-200 inline-flex items-center">
                     View all frequently asked questions &rarr;
                 </a>
             </div>
@@ -553,7 +556,7 @@
 
     <!-- 7. FINAL DOWNLOAD CTA BANNER -->
     <section class="py-16 bg-slate-50 border-t border-slate-200">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 reveal-on-scroll">
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">
                 Ready to Turn Your Phone into an SQL Server?
             </h2>
