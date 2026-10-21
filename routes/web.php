@@ -3,6 +3,7 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\DonationController as AdminDonationController;
 use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\ReleaseController as AdminReleaseController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
@@ -32,6 +33,8 @@ Route::get('/download/apk/{release?}', [DownloadController::class, 'downloadApk'
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->middleware('throttle:5,1')->name('contact.submit');
 Route::get('/donate', [DonateController::class, 'index'])->name('donate');
+Route::post('/donate/order', [DonateController::class, 'createOrder'])->middleware('throttle:10,1')->name('donate.order');
+Route::post('/donate/verify', [DonateController::class, 'verifyPayment'])->middleware('throttle:10,1')->name('donate.verify');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 Route::get('/privacy-policy', [LegalController::class, 'privacyPolicy'])->name('legal.privacy');
 Route::get('/terms', [LegalController::class, 'termsOfService'])->name('legal.terms');
@@ -84,4 +87,9 @@ Route::prefix('admin')->middleware(['auth', 'admin.timeout'])->name('admin.')->g
     Route::patch('/screenshots/{screenshot}/featured', [\App\Http\Controllers\Admin\ScreenshotController::class, 'toggleFeatured'])->name('screenshots.featured');
     Route::match(['delete', 'post'], '/screenshots/{screenshot}/delete', [\App\Http\Controllers\Admin\ScreenshotController::class, 'destroy'])->name('screenshots.destroy.post');
     Route::match(['delete', 'post'], '/screenshots/{screenshot}', [\App\Http\Controllers\Admin\ScreenshotController::class, 'destroy'])->name('screenshots.destroy');
+
+    // Donations
+    Route::get('/donations', [AdminDonationController::class, 'index'])->name('donations.index');
+    Route::match(['delete', 'post'], '/donations/{donation}/delete', [AdminDonationController::class, 'destroy'])->name('donations.destroy.post');
+    Route::match(['delete', 'post'], '/donations/{donation}', [AdminDonationController::class, 'destroy'])->name('donations.destroy');
 });

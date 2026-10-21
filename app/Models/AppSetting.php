@@ -24,6 +24,10 @@ class AppSetting extends Model
         'rate_limit_per_minute',
         'admin_login_max_attempts',
         'admin_session_lifetime_minutes',
+        'razorpay_enabled',
+        'razorpay_key_id',
+        'razorpay_key_secret',
+        'min_donation_amount',
     ];
 
     protected $casts = [
@@ -34,6 +38,8 @@ class AppSetting extends Model
         'rate_limit_per_minute' => 'integer',
         'admin_login_max_attempts' => 'integer',
         'admin_session_lifetime_minutes' => 'integer',
+        'razorpay_enabled' => 'boolean',
+        'min_donation_amount' => 'integer',
     ];
 
     protected static function booted()
@@ -74,7 +80,42 @@ class AppSetting extends Model
                 'rate_limit_per_minute' => 120,
                 'admin_login_max_attempts' => 3,
                 'admin_session_lifetime_minutes' => 15,
+                'razorpay_enabled' => true,
+                'min_donation_amount' => 100,
             ]);
         });
+    }
+
+    public function getLatestReleaseAttribute(): ?Release
+    {
+        return Release::where('is_latest', true)->first() ?? Release::orderBy('id', 'desc')->first();
+    }
+
+    public function getApkSizeAttribute(): string
+    {
+        return $this->latest_release?->apk_size ?: '12.4 MB';
+    }
+
+    public function getGithubSponsorUrlAttribute(): string
+    {
+        if (empty($this->github_repo_url)) {
+            return 'https://github.com/sponsors/pocketsql';
+        }
+        $url = trim($this->github_repo_url, '/');
+        if (str_contains($url, '/sponsors/')) {
+            return $url;
+        }
+        $path = parse_url($url, PHP_URL_PATH);
+        $parts = array_values(array_filter(explode('/', $path ?? '')));
+        $owner = $parts[0] ?? 'pocketsql';
+        return "https://github.com/sponsors/{$owner}";
+    }
+
+    public function getGithubIssuesUrlAttribute(): string
+    {
+        if (empty($this->github_repo_url)) {
+            return 'https://github.com/pocketsql/pocketsql/issues';
+        }
+        return rtrim($this->github_repo_url, '/') . '/issues';
     }
 }

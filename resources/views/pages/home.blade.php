@@ -5,6 +5,7 @@
 >
 
     <!-- 1. HERO SECTION (FULL WIDTH AUTO-SLIDING BACKGROUND IMAGES TUCKED UNDER NAVBAR) -->
+    <!-- 1. HERO SECTION (FULL WIDTH AUTO-SLIDING BACKGROUND IMAGES TUCKED UNDER NAVBAR) -->
     <section class="-mt-20 pt-28 pb-16 lg:pt-36 lg:pb-24 relative overflow-hidden bg-slate-950 text-white border-b border-slate-800 shadow-[inset_0_14px_28px_rgba(0,0,0,0.65)]"
              x-data="{
                 active: 0,
@@ -27,7 +28,7 @@
                     this.stopTimer();
                     this.timer = setInterval(() => {
                         this.active = (this.active + 1) % this.slides.length;
-                    }, 1000);
+                    }, 4000);
                 },
                 stopTimer() {
                     if (this.timer) clearInterval(this.timer);
@@ -41,10 +42,10 @@
         <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
             <template x-for="(slide, index) in slides" :key="index">
                 <div x-show="active === index"
-                     x-transition:enter="transition-opacity duration-500 ease-out"
+                     x-transition:enter="transition-opacity duration-700 ease-out"
                      x-transition:enter-start="opacity-0"
                      x-transition:enter-end="opacity-100"
-                     x-transition:leave="transition-opacity duration-500 ease-in"
+                     x-transition:leave="transition-opacity duration-700 ease-in"
                      x-transition:leave-start="opacity-100"
                      x-transition:leave-end="opacity-0"
                      class="absolute inset-0 w-full h-full">
@@ -88,19 +89,24 @@
 
                 <!-- CTAs with Font Awesome Icons -->
                 <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-2">
-                    <x-button variant="primary" href="https://play.google.com/store/apps/details?id=app.pocketsql.database" target="_blank" rel="noopener" class="py-3 px-6 text-base shadow-xl shadow-blue-500/40">
+                    <x-button variant="primary" href="{{ $settings->playstore_url ?? 'https://play.google.com/store/apps/details?id=app.pocketsql.database' }}" target="_blank" rel="noopener" class="py-3 px-6 text-base shadow-xl shadow-blue-500/40">
                         <i class="fa-brands fa-google-play mr-2 text-white"></i>
                         Get on Google Play
                     </x-button>
 
                     <x-button variant="secondary" href="{{ route('download.apk') }}" class="py-3 px-6 text-base !bg-white !text-slate-900 hover:!bg-slate-100 shadow-xl">
                         <i class="fa-solid fa-download mr-2 text-blue-600"></i>
-                        Direct APK (12.4 MB)
+                        Direct APK ({{ $settings->apk_size }})
                     </x-button>
 
                     <x-button variant="secondary" href="{{ route('docs') }}" class="py-3 px-5 text-sm !bg-slate-900/80 !text-white !border-white/25 hover:!bg-slate-800 backdrop-blur-md shadow-md">
                         <i class="fa-solid fa-book-open mr-1.5 text-blue-400"></i>
                         API Docs &rarr;
+                    </x-button>
+
+                    <x-button variant="secondary" href="{{ route('donate') }}" class="py-3 px-5 text-sm !bg-slate-900/80 !text-white !border-white/25 hover:!bg-slate-800 backdrop-blur-md shadow-md">
+                        <i class="fa-solid fa-heart mr-1.5 text-blue-400"></i>
+                        Donate
                     </x-button>
                 </div>
 
@@ -499,10 +505,11 @@
                     </p>
                 </div>
                 <div class="flex flex-wrap items-center justify-center gap-3">
-                    <a href="{{ route('donate') }}" class="px-6 py-3 bg-white text-blue-600 font-bold rounded-[10px] text-sm hover:bg-blue-50 shadow-md transition">
-                        Donate via UPI, Coffee or PayPal &rarr;
+                    <a href="{{ route('donate') }}" class="px-6 py-3 bg-white text-rose-600 font-extrabold rounded-[10px] text-sm hover:bg-rose-50 shadow-md transition flex items-center space-x-2 group">
+                        <i class="fa-solid fa-heart text-rose-500 transition-transform group-hover:scale-125"></i>
+                        <span>Donate &rarr;</span>
                     </a>
-                    <a href="https://github.com/pocketsql/pocketsql" target="_blank" rel="noopener" class="px-6 py-3 bg-blue-700 text-white font-bold rounded-[10px] text-sm hover:bg-blue-800 border border-blue-500 shadow-sm transition">
+                    <a href="{{ $settings->github_repo_url ?? 'https://github.com/pocketsql/pocketsql' }}" target="_blank" rel="noopener" class="px-6 py-3 bg-blue-700 text-white font-bold rounded-[10px] text-sm hover:bg-blue-800 border border-blue-500 shadow-sm transition">
                         <i class="fa-brands fa-github mr-1"></i> Star on GitHub ⭐
                     </a>
                 </div>
@@ -554,13 +561,13 @@
                 Download PocketSQL {{ $settings->current_version }} today. Zero setup hurdles, zero cloud accounts, and 100% offline control.
             </p>
             <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
-                <x-button variant="primary" href="https://play.google.com/store/apps/details?id=app.pocketsql.database" target="_blank" rel="noopener" class="py-3 px-6 text-base">
+                <x-button variant="primary" href="{{ $settings->playstore_url ?? 'https://play.google.com/store/apps/details?id=app.pocketsql.database' }}" target="_blank" rel="noopener" class="py-3 px-6 text-base">
                     <i class="fa-brands fa-google-play mr-2"></i>
                     Install from Google Play
                 </x-button>
                 <x-button variant="secondary" href="{{ route('download.apk') }}" class="py-3 px-6 text-base">
                     <i class="fa-solid fa-download mr-2 text-blue-600"></i>
-                    Download APK Directly (12.4 MB)
+                    Download APK Directly ({{ $settings->apk_size }})
                 </x-button>
             </div>
         </div>

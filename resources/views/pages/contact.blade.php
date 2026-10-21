@@ -45,7 +45,7 @@
                         <h3 class="text-sm font-bold text-slate-900">GitHub Issues &amp; Bugs</h3>
                     </div>
                     <p class="text-xs text-slate-600">Track source code, report engine edge cases, or review PRs:</p>
-                    <a href="https://github.com/pocketsql/pocketsql/issues" target="_blank" rel="noopener" class="text-xs font-semibold text-blue-600 hover:underline block pt-1">
+                    <a href="{{ $settings->github_issues_url }}" target="_blank" rel="noopener" class="text-xs font-semibold text-blue-600 hover:underline block pt-1">
                         Open GitHub Issue Tracker &rarr;
                     </a>
                 </x-card>

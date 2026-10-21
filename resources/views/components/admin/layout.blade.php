@@ -18,6 +18,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
+        [x-cloak] {
+            display: none !important;
+        }
         .rounded-10, button, input, select, textarea {
             border-radius: 10px !important;
         }
@@ -29,6 +32,7 @@
         $unreadCount = \App\Models\ContactMessage::where('status', 'unread')->count();
         $screenshotCount = \App\Models\Screenshot::count();
         $releaseCount = \App\Models\Release::count();
+        $donationCount = \App\Models\Donation::successful()->count();
         $settings = \App\Models\AppSetting::instance();
     @endphp
 
@@ -150,6 +154,18 @@
                                     {{ \App\Models\ContactMessage::count() }}
                                 </span>
                             @endif
+                        <!-- Community Donations -->
+                        <a href="{{ route('admin.donations.index') }}" 
+                           class="group flex items-center justify-between px-3 py-2.5 rounded-[10px] text-xs font-semibold transition {{ Route::is('admin.donations*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' }}">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-[8px] flex items-center justify-center text-xs transition {{ Route::is('admin.donations*') ? 'bg-white/20 text-white' : 'bg-rose-50 text-rose-600 group-hover:bg-rose-100' }}">
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
+                                <span>Donations</span>
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded-[6px] font-mono font-bold {{ Route::is('admin.donations*') ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600' }}">
+                                {{ $donationCount }}
+                            </span>
                         </a>
 
                         <!-- Settings -->

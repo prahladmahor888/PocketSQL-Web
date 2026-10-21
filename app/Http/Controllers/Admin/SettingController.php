@@ -28,9 +28,15 @@ class SettingController extends Controller
             'contact_email' => 'required|email',
             'release_notes' => 'nullable|string',
             'api_server_active' => 'nullable|boolean',
+            'razorpay_enabled' => 'nullable|boolean',
+            'razorpay_key_id' => 'nullable|string|max:100',
+            'razorpay_key_secret' => 'nullable|string|max:100',
+            'min_donation_amount' => 'nullable|integer|min:1|max:50000',
         ]);
 
         $validated['api_server_active'] = $request->has('api_server_active');
+        $validated['razorpay_enabled'] = $request->has('razorpay_enabled');
+        $validated['min_donation_amount'] = (int) ($request->input('min_donation_amount') ?: 100);
 
         $settings->update($validated);
 

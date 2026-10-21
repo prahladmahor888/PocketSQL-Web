@@ -70,7 +70,7 @@
             'worstRating' => '1'
           ],
           'downloadUrl' => url('/download/apk'),
-          'softwareVersion' => 'v1.0.5',
+          'softwareVersion' => $settings->current_version ?? 'v1.0.5',
           'author' => [
             '@type' => 'Organization',
             'name' => 'PocketSQL Open Source Project',
@@ -112,8 +112,11 @@
     <!-- Local Compiled Tailwind CSS & Font Awesome Icons via Vite Bundle -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Strict 10px border-radius enforcement -->
+    <!-- Strict 10px border-radius & Alpine.js cloak enforcement -->
     <style>
+        [x-cloak] {
+            display: none !important;
+        }
         *, ::before, ::after {
             --tw-border-spacing-x: 0;
             --tw-border-spacing-y: 0;
@@ -131,7 +134,7 @@
             <div class="flex items-center space-x-2">
                 <span class="inline-flex items-center px-2 py-0.5 rounded-[10px] text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5"></span>
-                    v1.0.5 Released
+                    {{ $settings->current_version }} Released
                 </span>
                 <span class="text-slate-300 hidden sm:inline">Android 10 - 15 Ready • Zero Root Required</span>
             </div>

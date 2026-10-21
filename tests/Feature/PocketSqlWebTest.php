@@ -406,6 +406,176 @@ class PocketSqlWebTest extends TestCase
             'ip_address' => $attackerIp,
         ]);
     }
+
+    /**
+     * Test donation order creation enforces minimum 100 INR requirement.
+     */
+    public function test_donation_order_creation_enforces_minimum_amount(): void
+    {
+        // Attempt with ₹50 (below ₹100 minimum)
+        $resBelow = $this->postJson('/donate/order', [
+            'name' => 'Rahul Sharma',
+            'email' => 'rahul@example.com',
+            'amount' => 50,
+        ]);
+
+        $resBelow->assertStatus(422);
+        $resBelow->assertJsonValidationErrors(['amount']);
+
+        // Attempt without name or email
+        $resInvalid = $this->postJson('/donate/order', [
+            'amount' => 100,
+        ]);
+        $resInvalid->assertStatus(422);
+        $resInvalid->assertJsonValidationErrors(['name', 'email']);
+    }
+
+    /**
+     * Test complete Razorpay donation order creation and signature verification flow.
+     */
+    public function test_donation_order_creation_and_verification_flow(): void
+    {
+        // 1. Create Order with ₹250
+        $resOrder = $this->postJson('/donate/order', [
+            'name' => 'Priya Patel',
+            'email' => 'priya@example.com',
+            'amount' => 250,
+            'message' => 'Great work on the mobile SQLite daemon!',
+        ]);
+
+        $resOrder->assertStatus(200);
+        $resOrder->assertJson(['success' => true]);
+
+        $donationId = $resOrder->json('donation_id');
+        $orderId = $resOrder->json('order_id');
+
+        $this->assertDatabaseHas('donations', [
+            'id' => $donationId,
+            'donor_name' => 'Priya Patel',
+            'donor_email' => 'priya@example.com',
+            'amount' => 250.00,
+            'status' => 'pending',
+        ]);
+
+        // 2. Verify Payment
+        $fakePaymentId = 'pay_test_' . uniqid();
+        $fakeSignature = 'sig_test_' . uniqid();
+
+        $resVerify = $this->postJson('/donate/verify', [
+            'donation_id' => $donationId,
+            'razorpay_payment_id' => $fakePaymentId,
+            'razorpay_order_id' => $orderId,
+            'razorpay_signature' => $fakeSignature,
+            'payment_method' => 'UPI (Google Pay)',
+        ]);
+
+        $resVerify->assertStatus(200);
+        $resVerify->assertJson(['success' => true]);
+
+        // 3. Verify status updated to successful in database
+        $this->assertDatabaseHas('donations', [
+            'id' => $donationId,
+            'status' => 'successful',
+            'razorpay_payment_id' => $fakePaymentId,
+            'payment_method' => 'UPI (Google Pay)',
+        ]);
+    }
+
+    /**
+     * Test admin can view donations list, totals, and donor details.
+     */
+    public function test_admin_can_view_donations_and_totals(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'admin@pocketsql.local',
+            'password' => Hash::make('Secret12345!'),
+        ]);
+
+        // Create 2 donations
+        \App\Models\Donation::create([
+            'donor_name' => 'Amit Kumar',
+            'donor_email' => 'amit@example.com',
+            'amount' => 500,
+            'currency' => 'INR',
+            'status' => 'successful',
+            'payment_method' => 'UPI • Google Pay',
+            'razorpay_payment_id' => 'pay_123456789',
+            'razorpay_order_id' => 'order_123456789',
+        ]);
+
+        \App\Models\Donation::create([
+            'donor_name' => 'Sara Connor',
+            'donor_email' => 'sara@example.com',
+            'amount' => 1000,
+            'currency' => 'INR',
+            'status' => 'successful',
+            'payment_method' => 'Card • Visa',
+            'razorpay_payment_id' => 'pay_987654321',
+            'razorpay_order_id' => 'order_987654321',
+        ]);
+
+        $response = $this->actingAs($user)->get('/admin/donations');
+
+        $response->assertStatus(200);
+        $response->assertSee('Amit Kumar');
+        $response->assertSee('Sara Connor');
+        $response->assertSee('₹1,500.00'); // Total sum
+        $response->assertSee('pay_123456789');
+    }
+
+    /**
+     * Test admin can delete an invalid/test donation record.
+     */
+    public function test_admin_can_delete_donation_record(): void
+    {
+        $user = User::factory()->create();
+
+        $donation = \App\Models\Donation::create([
+            'donor_name' => 'Spam Donor',
+            'donor_email' => 'spam@test.com',
+            'amount' => 100,
+            'status' => 'failed',
+        ]);
+
+        $response = $this->actingAs($user)->delete("/admin/donations/{$donation->id}");
+        $response->assertRedirect('/admin/donations');
+
+        $this->assertDatabaseMissing('donations', [
+            'id' => $donation->id,
+        ]);
+    }
+
+    /**
+     * Test admin can update Razorpay settings dynamically.
+     */
+    public function test_admin_can_update_razorpay_settings(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/admin/settings', [
+            'current_version' => 'v1.0.5',
+            'version_code' => 11,
+            'apk_download_url' => '/download/apk',
+            'playstore_url' => 'https://play.google.com/store/apps/details?id=app.pocketsql.database',
+            'github_repo_url' => 'https://github.com/pocketsql/pocketsql',
+            'documentation_url' => '/docs',
+            'contact_email' => 'contact@prahlix.com',
+            'release_notes' => 'Razorpay gateway enabled',
+            'api_server_active' => '1',
+            'razorpay_enabled' => '1',
+            'razorpay_key_id' => 'rzp_live_testkey12345',
+            'razorpay_key_secret' => 'supersecretlivekey987',
+            'min_donation_amount' => 100,
+        ]);
+
+        $response->assertRedirect('/admin/settings');
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('app_settings', [
+            'razorpay_key_id' => 'rzp_live_testkey12345',
+            'min_donation_amount' => 100,
+        ]);
+    }
 }
 
 

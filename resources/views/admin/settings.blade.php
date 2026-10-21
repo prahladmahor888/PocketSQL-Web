@@ -198,6 +198,72 @@
                 </label>
             </div>
 
+            <!-- Section 6: Razorpay Payment Gateway Configuration -->
+            <div id="razorpay-config" class="bg-white border border-slate-200 rounded-[10px] p-5 sm:p-7 shadow-xs space-y-5">
+                <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-[8px] bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900">Razorpay Payment Gateway Settings</h3>
+                            <p class="text-[11px] text-slate-500">Collect community donations via UPI (GPay/PhonePe), Credit &amp; Debit Cards, and Netbanking.</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                        <input type="checkbox" name="razorpay_enabled" value="1" {{ $settings->razorpay_enabled ? 'checked' : '' }} class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                    </label>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div class="space-y-1.5">
+                        <label for="razorpay_key_id" class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i class="fa-solid fa-key text-slate-400 text-[11px]"></i>
+                            <span>Razorpay Key ID</span>
+                        </label>
+                        <input type="text" 
+                               id="razorpay_key_id" 
+                               name="razorpay_key_id" 
+                               placeholder="rzp_live_... or rzp_test_..."
+                               value="{{ old('razorpay_key_id', $settings->razorpay_key_id) }}"
+                               class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 font-mono">
+                        <span class="text-[11px] text-slate-400">Obtained from Razorpay Dashboard &rarr; Settings &rarr; API Keys</span>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="razorpay_key_secret" class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i class="fa-solid fa-lock text-slate-400 text-[11px]"></i>
+                            <span>Razorpay Key Secret</span>
+                        </label>
+                        <input type="password" 
+                               id="razorpay_key_secret" 
+                               name="razorpay_key_secret" 
+                               placeholder="••••••••••••••••••••••••"
+                               value="{{ old('razorpay_key_secret', $settings->razorpay_key_secret) }}"
+                               class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 font-mono">
+                        <span class="text-[11px] text-slate-400">Secret key used strictly for server-side HMAC SHA256 verification</span>
+                    </div>
+
+                    <div class="space-y-1.5 sm:col-span-2">
+                        <label for="min_donation_amount" class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i class="fa-solid fa-indian-rupee-sign text-slate-400 text-[11px]"></i>
+                            <span>Minimum Donation Amount (₹)</span>
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" 
+                               id="min_donation_amount" 
+                               name="min_donation_amount" 
+                               min="1"
+                               max="50000"
+                               required
+                               value="{{ old('min_donation_amount', $settings->min_donation_amount ?: 100) }}"
+                               class="w-full sm:w-60 px-3.5 py-2.5 rounded-[8px] border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 font-mono font-bold">
+                        <span class="text-[11px] text-slate-400 block">Default minimum required contribution per transaction (₹100 recommended).</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="pt-2">
                 <button type="submit" class="inline-flex items-center px-6 py-2.5 rounded-[8px] bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm shadow-blue-500/20 transition">
                     <i class="fa-solid fa-floppy-disk mr-2"></i>

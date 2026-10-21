@@ -57,7 +57,7 @@
                         <span>Download APK ({{ $latestRelease->apk_size ?? '12.4 MB' }})</span>
                     </x-button>
 
-                    <x-button variant="secondary" href="https://play.google.com/store/apps/details?id=app.pocketsql.database" target="_blank" rel="noopener" class="py-2.5 px-5 text-sm">
+                    <x-button variant="secondary" href="{{ $settings->playstore_url ?? 'https://play.google.com/store/apps/details?id=app.pocketsql.database' }}" target="_blank" rel="noopener" class="py-2.5 px-5 text-sm">
                         <i class="fa-brands fa-google-play mr-1.5 text-blue-600"></i>
                         <span>Google Play Store</span>
                     </x-button>
@@ -207,7 +207,7 @@
                 <li>Download the APK file onto your Android device via browser.</li>
                 <li>When prompted by Android, tap <strong>Settings</strong> and enable <em>"Allow from this source"</em>.</li>
                 <li>Tap <strong>Install</strong>. Once completed, launch PocketSQL from your app drawer.</li>
-                <li>(Optional) Verify the SHA-256 checksum on your computer using <code class="bg-white px-1.5 py-0.5 rounded border border-slate-300 font-mono">sha256sum PocketSQL-v1.0.5.apk</code>.</li>
+                <li>(Optional) Verify the SHA-256 checksum on your computer using <code class="bg-white px-1.5 py-0.5 rounded border border-slate-300 font-mono">sha256sum PocketSQL-{{ $latestRelease->version ?? $settings->current_version }}.apk</code>.</li>
             </ol>
         </section>
 

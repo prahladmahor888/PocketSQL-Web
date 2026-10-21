@@ -42,6 +42,10 @@
                        class="px-3 py-1.5 rounded-[8px] {{ Route::is('admin.releases*') ? 'bg-slate-100 text-blue-600' : 'text-slate-600 hover:text-slate-900' }}">
                         Releases
                     </a>
+                    <a href="{{ route('admin.donations.index') }}" 
+                       class="px-3 py-1.5 rounded-[8px] {{ Route::is('admin.donations*') ? 'bg-slate-100 text-blue-600' : 'text-slate-600 hover:text-slate-900' }}">
+                        Donations
+                    </a>
                     <a href="{{ route('admin.settings') }}" 
                        class="px-3 py-1.5 rounded-[8px] {{ Route::is('admin.settings') ? 'bg-slate-100 text-blue-600' : 'text-slate-600 hover:text-slate-900' }}">
                         Settings
