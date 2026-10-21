@@ -1,0 +1,24 @@
+# PocketSQL Robots.txt
+# Comprehensive Search Engine Crawling Directives
+
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /features
+Allow: /docs
+Allow: /download
+Allow: /download/apk
+Allow: /faq
+Allow: /contact
+Allow: /donate
+Allow: /privacy-policy
+Allow: /terms
+
+# Disallow administrative control panel and private endpoints
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /login
+
+# Sitemaps
+Sitemap: https://pocketsql.prahlix.com/sitemap.xml
+Sitemap: http://127.0.0.1:8000/sitemap.xml

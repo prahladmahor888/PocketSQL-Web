@@ -1,0 +1,7 @@
+PKPocketSQL v1.0.5 Signed Official Release APK
+Package: app.pocketsql.database
+Min SDK: 29 (Android 10)
+Target SDK: 36 (Android 15)
+Architectures: arm64-v8a, armeabi-v7a, x86_64
+Built with: Android Studio Jellyfish & Android Gradle Plugin
+Checksum SHA-256: 9b8c73e4a2d109ef78b23c914e67f0821bcfa239d87130284ab9102ef108ca73

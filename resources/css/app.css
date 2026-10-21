@@ -1,0 +1,65 @@
+@import "tailwindcss";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+@theme {
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-brand-blue: #007ACC;
+  --color-brand-royal: #2563EB;
+  --color-brand-royal-hover: #1D4ED8;
+  --color-brand-dark: #0F172A;
+  --color-brand-border: #E2E8F0;
+  --color-brand-border-dark: #CBD5E1;
+  --color-brand-bg: #FFFFFF;
+  --color-brand-card: #F8FAFC;
+  --color-brand-emerald: #10B981;
+  --color-brand-slate-600: #475569;
+  --color-brand-slate-500: #64748B;
+}
+
+/* Strict 10px Radius Constraint for all components per PRD */
+* {
+  --radius-max: 10px;
+}
+
+.rounded-10,
+.rounded-card,
+.rounded-btn {
+  border-radius: 10px !important;
+}
+
+/* Ensure inputs, buttons, cards never exceed 10px radius */
+button, input, select, textarea, .card-box {
+  border-radius: 10px;
+}
+
+/* Ultra-clean Ambient Shadow */
+.ambient-shadow {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.ambient-shadow-md {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* Smooth transitions */
+a, button {
+  transition: all 0.15s ease-in-out;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}

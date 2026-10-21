@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <!-- Outer Frame -->
+  <rect width="800" height="500" rx="10" fill="#0F172A"/>
+  <!-- Top Bar -->
+  <rect width="800" height="42" rx="10" fill="#1E293B"/>
+  <rect y="32" width="800" height="10" fill="#1E293B"/>
+  <circle cx="25" cy="21" r="6" fill="#EF4444"/>
+  <circle cx="45" cy="21" r="6" fill="#F59E0B"/>
+  <circle cx="65" cy="21" r="6" fill="#10B981"/>
+  <text x="400" y="26" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8" text-anchor="middle" font-weight="600">PocketSQL Library — 200+ SQL Templates &amp; Quick Snippets</text>
+
+  <!-- Left Sidebar (Categories) -->
+  <rect x="0" y="42" width="220" height="458" fill="#1E293B" stroke="#334155" stroke-width="0.5"/>
+  <g transform="translate(15, 65)">
+    <text x="5" y="15" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" fill="#94A3B8" font-weight="700">CATEGORIES</text>
+    
+    <!-- Active item -->
+    <rect x="0" y="30" width="190" height="32" rx="6" fill="#2563EB"/>
+    <text x="12" y="51" font-family="'JetBrains Mono', monospace" font-size="12" fill="#FFFFFF" font-weight="600">DDL Tables &amp; Keys</text>
+
+    <text x="12" y="90" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">DML &amp; Batch Upsert</text>
+    <text x="12" y="125" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">Window Functions</text>
+    <text x="12" y="160" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">Triggers &amp; Events</text>
+    <text x="12" y="195" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">JSON Extraction</text>
+    <text x="12" y="230" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">40+ System Views</text>
+    <text x="12" y="265" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">Export / Import</text>
+  </g>
+
+  <!-- Main Code Pane -->
+  <g transform="translate(245, 65)">
+    <text x="0" y="18" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" fill="#F8FAFC" font-weight="700">Template: CREATE TABLE with Foreign Keys &amp; Check Constraints</text>
+    <text x="0" y="38" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">Auto-inserts into terminal buffer upon tap</text>
+
+    <rect x="0" y="55" width="525" height="340" rx="8" fill="#111827" stroke="#374151"/>
+    <g transform="translate(20, 80)">
+      <text x="0" y="0" font-family="'JetBrains Mono', monospace" font-size="12" fill="#38BDF8">CREATE TABLE</text>
+      <text x="100" y="0" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">customers (</text>
+      
+      <text x="20" y="25" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">id</text>
+      <text x="50" y="25" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F59E0B">INT AUTO_INCREMENT PRIMARY KEY</text>
+      <text x="280" y="25" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">,</text>
+
+      <text x="20" y="50" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">uuid</text>
+      <text x="70" y="50" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F59E0B">VARCHAR(36) NOT NULL UNIQUE</text>
+      <text x="280" y="50" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">,</text>
+
+      <text x="20" y="75" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">email</text>
+      <text x="75" y="75" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F59E0B">VARCHAR(255) NOT NULL</text>
+      <text x="240" y="75" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">,</text>
+
+      <text x="20" y="100" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">balance</text>
+      <text x="90" y="100" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F59E0B">DECIMAL(12,2) DEFAULT 0.00</text>
+      <text x="300" y="100" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">,</text>
+
+      <text x="20" y="125" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">created_at</text>
+      <text x="110" y="125" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F59E0B">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</text>
+      <text x="390" y="125" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">,</text>
+
+      <text x="20" y="150" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">updated_at</text>
+      <text x="110" y="150" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F59E0B">TIMESTAMP ON UPDATE CURRENT_TIMESTAMP</text>
+      <text x="405" y="150" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">,</text>
+
+      <text x="20" y="175" font-family="'JetBrains Mono', monospace" font-size="12" fill="#38BDF8">CONSTRAINT</text>
+      <text x="110" y="175" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">chk_pos_balance</text>
+      <text x="240" y="175" font-family="'JetBrains Mono', monospace" font-size="12" fill="#38BDF8">CHECK (balance &gt;= 0)</text>
+
+      <text x="0" y="200" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">) ENGINE=PocketBTree;</text>
+    </g>
+
+    <!-- Paste to terminal CTA button inside mockup -->
+    <rect x="360" y="340" width="150" height="38" rx="6" fill="#10B981"/>
+    <text x="435" y="364" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" fill="#FFFFFF" font-weight="700" text-anchor="middle">Insert to Console</text>
+  </g>
+</svg>

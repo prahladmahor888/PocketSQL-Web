@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" fill="none">
+  <rect width="320" height="320" rx="10" fill="#FFFFFF"/>
+  <rect x="10" y="10" width="300" height="300" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
+  
+  <!-- Outer Finder 1 (Top-Left) -->
+  <rect x="35" y="35" width="60" height="60" rx="6" fill="#0F172A"/>
+  <rect x="43" y="43" width="44" height="44" rx="4" fill="#FFFFFF"/>
+  <rect x="51" y="51" width="28" height="28" rx="2" fill="#2563EB"/>
+
+  <!-- Outer Finder 2 (Top-Right) -->
+  <rect x="225" y="35" width="60" height="60" rx="6" fill="#0F172A"/>
+  <rect x="233" y="43" width="44" height="44" rx="4" fill="#FFFFFF"/>
+  <rect x="241" y="51" width="28" height="28" rx="2" fill="#2563EB"/>
+
+  <!-- Outer Finder 3 (Bottom-Left) -->
+  <rect x="35" y="225" width="60" height="60" rx="6" fill="#0F172A"/>
+  <rect x="43" y="233" width="44" height="44" rx="4" fill="#FFFFFF"/>
+  <rect x="51" y="241" width="28" height="28" rx="2" fill="#2563EB"/>
+
+  <!-- QR Matrix decorative modules -->
+  <g fill="#0F172A">
+    <!-- Row 1 -->
+    <rect x="115" y="35" width="12" height="12" rx="2"/>
+    <rect x="135" y="35" width="24" height="12" rx="2"/>
+    <rect x="175" y="35" width="12" height="12" rx="2"/>
+    <rect x="195" y="35" width="15" height="12" rx="2"/>
+
+    <!-- Row 2 -->
+    <rect x="115" y="55" width="32" height="12" rx="2"/>
+    <rect x="165" y="55" width="16" height="12" rx="2"/>
+    <rect x="195" y="55" width="15" height="12" rx="2"/>
+
+    <!-- Row 3 -->
+    <rect x="115" y="75" width="16" height="12" rx="2"/>
+    <rect x="145" y="75" width="16" height="12" rx="2"/>
+    <rect x="175" y="75" width="35" height="12" rx="2"/>
+
+    <!-- Mid Section -->
+    <rect x="35" y="115" width="24" height="12" rx="2"/>
+    <rect x="75" y="115" width="18" height="12" rx="2"/>
+    <rect x="115" y="115" width="12" height="24" rx="2"/>
+    <rect x="145" y="115" width="30" height="12" rx="2"/>
+    <rect x="195" y="115" width="25" height="12" rx="2"/>
+    <rect x="240" y="115" width="45" height="12" rx="2"/>
+
+    <rect x="35" y="135" width="12" height="32" rx="2"/>
+    <rect x="65" y="145" width="30" height="12" rx="2"/>
+    <rect x="115" y="150" width="20" height="20" rx="2"/>
+    <rect x="185" y="145" width="30" height="12" rx="2"/>
+    <rect x="235" y="135" width="15" height="30" rx="2"/>
+    <rect x="260" y="145" width="25" height="12" rx="2"/>
+
+    <rect x="55" y="185" width="40" height="12" rx="2"/>
+    <rect x="115" y="185" width="35" height="12" rx="2"/>
+    <rect x="170" y="185" width="15" height="25" rx="2"/>
+    <rect x="200" y="185" width="25" height="12" rx="2"/>
+    <rect x="240" y="185" width="45" height="12" rx="2"/>
+
+    <!-- Bottom Right Section -->
+    <rect x="115" y="225" width="24" height="12" rx="2"/>
+    <rect x="155" y="225" width="20" height="25" rx="2"/>
+    <rect x="195" y="225" width="40" height="12" rx="2"/>
+    <rect x="250" y="225" width="35" height="12" rx="2"/>
+
+    <rect x="115" y="250" width="15" height="35" rx="2"/>
+    <rect x="140" y="265" width="35" height="20" rx="2"/>
+    <rect x="190" y="250" width="15" height="35" rx="2"/>
+    <rect x="220" y="250" width="20" height="15" rx="2"/>
+    <rect x="255" y="250" width="30" height="35" rx="2"/>
+  </g>
+
+  <!-- Center Badge: PocketSQL Icon -->
+  <rect x="130" y="130" width="60" height="60" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <rect x="138" y="138" width="44" height="44" rx="6" fill="#2563EB"/>
+  <path d="M150 152C150 150.3 154.5 149 160 149C165.5 149 170 150.3 170 152V168C170 169.7 165.5 171 160 171C154.5 171 150 169.7 150 168V152Z" fill="#FFFFFF"/>
+</svg>

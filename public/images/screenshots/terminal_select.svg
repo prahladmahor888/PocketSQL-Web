@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <!-- Outer Frame -->
+  <rect width="800" height="500" rx="10" fill="#0F172A"/>
+  <!-- Top Bar -->
+  <rect width="800" height="42" rx="10" fill="#1E293B"/>
+  <rect y="32" width="800" height="10" fill="#1E293B"/>
+  <!-- Window Controls -->
+  <circle cx="25" cy="21" r="6" fill="#EF4444"/>
+  <circle cx="45" cy="21" r="6" fill="#F59E0B"/>
+  <circle cx="65" cy="21" r="6" fill="#10B981"/>
+  <text x="400" y="26" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8" text-anchor="middle" font-weight="600">PocketSQL Query Optimizer — Window Functions &amp; JOINs</text>
+  
+  <g transform="translate(30, 65)">
+    <!-- Prompt & Query -->
+    <text x="0" y="20" font-family="'JetBrains Mono', monospace" font-size="13" fill="#10B981" font-weight="600">pocketsql [ecommerce]&gt;</text>
+    <text x="210" y="20" font-family="'JetBrains Mono', monospace" font-size="13" fill="#F8FAFC">SELECT p.id, p.name, p.price,</text>
+    <text x="210" y="42" font-family="'JetBrains Mono', monospace" font-size="13" fill="#F8FAFC">       DENSE_RANK() OVER (ORDER BY p.price DESC) AS price_rank</text>
+    <text x="210" y="64" font-family="'JetBrains Mono', monospace" font-size="13" fill="#F8FAFC">FROM products p LIMIT 4;</text>
+
+    <!-- Table Output -->
+    <rect x="0" y="85" width="740" height="235" rx="6" fill="#1E293B" stroke="#334155"/>
+    <text x="20" y="115" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">+-----+-----------------------------------+----------+------------+</text>
+    <text x="20" y="138" font-family="'JetBrains Mono', monospace" font-size="12" fill="#38BDF8">| id  | name                              | price    | price_rank |</text>
+    <text x="20" y="161" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">+-----+-----------------------------------+----------+------------+</text>
+    <text x="20" y="184" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">| 101 | Apple MacBook Pro 16" M3 Max      | $3,499.00| 1          |</text>
+    <text x="20" y="207" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">| 104 | Dell XPS 15 OLED Touch 64GB       | $2,799.00| 2          |</text>
+    <text x="20" y="230" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">| 108 | Sony Alpha 7 IV Mirrorless Kit    | $2,498.00| 3          |</text>
+    <text x="20" y="253" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F8FAFC">| 112 | ASUS ROG Zephyrus G16 Gaming      | $1,999.99| 4          |</text>
+    <text x="20" y="276" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">+-----+-----------------------------------+----------+------------+</text>
+    <text x="20" y="299" font-family="'JetBrains Mono', monospace" font-size="12" fill="#10B981">4 rows in set (1.12 ms) • Engine: B-Tree In-Memory Cache [HIT]</text>
+
+    <!-- Execution Plan details -->
+    <rect x="0" y="335" width="740" height="75" rx="6" fill="#0284C7" fill-opacity="0.1" stroke="#0284C7" stroke-width="1"/>
+    <text x="20" y="360" font-family="'JetBrains Mono', monospace" font-size="12" fill="#38BDF8" font-weight="600">EXPLAIN ANALYZE SUMMARY:</text>
+    <text x="20" y="385" font-family="'JetBrains Mono', monospace" font-size="12" fill="#CBD5E1">Scan Type: Index Scan on PRIMARY (cost=0.04) • Window Sort: QuickSort in 0.18ms</text>
+  </g>
+</svg>
