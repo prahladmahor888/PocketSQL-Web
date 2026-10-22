@@ -1,7 +1,8 @@
 <x-layout 
     title="Frequently Asked Questions (FAQ) — PocketSQL"
     description="Frequently asked questions about PocketSQL: root requirement, background daemon battery impact, TLS security, Wi-Fi connectivity, export formats, and SQLite compatibilities."
-    keywords="pocketsql faq, android sql questions, does pocketsql require root, android rest api database battery life, sqlite android faq"
+    keywords="PocketSQL faq, pocketsql root, does pocketsql require root, pocketsql android, pocketsql rest api database, pocketsql battery impact, sqlite android faq"
+    :faqItems="$faqs"
 >
 
     <!-- Page Header -->

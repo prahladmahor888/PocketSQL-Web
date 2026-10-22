@@ -1,7 +1,7 @@
 <x-layout 
-    title="Documentation &amp; REST API Reference — PocketSQL"
+    title="PocketSQL Documentation — HTTP REST API &amp; Android Client Reference"
     description="Complete developer handbook and HTTP REST API documentation for PocketSQL. Learn how to query an Android SQL database via cURL, Python, Node.js, Go, and PHP over LAN/Wi-Fi."
-    keywords="android sql rest api docs, query android sqlite over http, python android sql client, curl sqlite android, android lan database api"
+    keywords="PocketSQL documentation, PocketSQL docs, PocketSQL api, android sql rest api docs, query android sqlite over http, python android sql client, curl sqlite android, android lan database api"
 >
 
     <!-- Page Header -->
@@ -53,6 +53,9 @@
                             Join Discord Community &rarr;
                         </a>
                     </div>
+
+                    <!-- Single Clean Developer Sidebar Ad -->
+                    <x-ad-slot type="sidebar" class="mt-4" />
                 </div>
             </div>
 

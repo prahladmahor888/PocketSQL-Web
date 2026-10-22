@@ -1,7 +1,7 @@
 <x-layout 
-    title="Features — In-Depth SQL Engine &amp; REST Server Specifications"
-    description="Explore the technical capabilities of PocketSQL: SQLite standard SQL dialect, analytical window functions, ACID transactions, 40+ system tables, and built-in TLS REST daemon for Android."
-    keywords="android sqlite features, android sql engine specs, mobile sql window functions, android rest api daemon, offline android sql performance"
+    title="PocketSQL Features — Android SQL Engine &amp; REST Server Capabilities"
+    description="Explore technical capabilities of PocketSQL: full relational SQL engine, analytical window functions, ACID transactions, 40+ MySQL system tables, and TLS 1.3 REST daemon for Android."
+    keywords="PocketSQL features, PocketSQL capabilities, android sqlite features, android sql engine specs, mobile sql window functions, android rest api daemon, offline android sql performance"
 >
 
     <!-- Page Header -->

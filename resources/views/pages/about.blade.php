@@ -1,4 +1,8 @@
-<x-layout title="About Us — The PocketSQL Story &amp; Architecture">
+<x-layout 
+    title="About PocketSQL — Mission, Architecture &amp; Team"
+    description="Learn the story behind PocketSQL: why we engineered a zero-root embedded SQL database engine and persistent REST server for Android to empower students, engineers, and offline IoT developers."
+    keywords="About PocketSQL, PocketSQL story, who made PocketSQL, PocketSQL architecture, android sql engine creators"
+>
 
     <!-- Page Header -->
     <div class="bg-slate-50 border-b border-slate-200 py-16">
@@ -125,8 +129,9 @@
                         <h3 class="text-lg font-bold text-slate-900">The PocketSQL Core Team</h3>
                         <p class="text-xs text-slate-500 font-medium">Independent Open-Source Software Engineers</p>
                         <div class="flex items-center space-x-2 mt-1">
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded-[8px] bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                🇮🇳 Made with ❤️ in India
+                            <span class="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-[8px] bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                <x-india-flag class="w-4 h-3 mr-1.5 rounded-[2px] shadow-2xs border border-emerald-200/80" />
+                                <span>Made with ❤️ in India</span>
                             </span>
                         </div>
                     </div>

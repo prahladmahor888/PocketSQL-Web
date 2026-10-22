@@ -18,7 +18,8 @@
                         MIT Licensed
                     </span>
                     <span class="inline-flex items-center px-2.5 py-1 rounded-[10px] text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                        🇮🇳 Made in India
+                        <x-india-flag class="w-4 h-3 mr-1.5 rounded-[2px] shadow-2xs border border-slate-300/60" />
+                        <span>Made in India</span>
                     </span>
                     <a href="{{ route('donate') }}" 
                        class="inline-flex items-center px-2.5 py-1 rounded-[10px] text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 transition">

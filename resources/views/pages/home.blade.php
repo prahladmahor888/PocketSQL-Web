@@ -1,10 +1,10 @@
 <x-layout 
-    title="PocketSQL — Embedded SQL Database &amp; API Server for Android (Zero Root)"
-    description="Run a full-featured, zero-root SQL database engine and background REST/TLS API server directly on any Android device. 100% offline-first, microsecond latency, zero cloud dependencies."
-    keywords="android sql database, run sql on android, android rest api server, offline sql database, mobile sqlite daemon, android developer database"
+    title="PocketSQL — Embedded SQL Database &amp; REST API Server for Android (Zero Root)"
+    description="Run a full-featured, zero-root SQL database engine and background REST/TLS API server directly on any Android device. 100% offline-first, microsecond latency, zero cloud dependencies. Download PocketSQL today."
+    keywords="PocketSQL, pocketsql, pocketsql android, pocketsql apk, pocketsql download, android sql database, run mysql on android, android rest api server, offline sql database, zero root sqlite server, termux mysql alternative, mobile sql server, android database daemon, sqlite android terminal"
+    :faqItems="$topFaqs"
 >
 
-    <!-- 1. HERO SECTION (FULL WIDTH AUTO-SLIDING BACKGROUND IMAGES TUCKED UNDER NAVBAR) -->
     <!-- 1. HERO SECTION (FULL WIDTH AUTO-SLIDING BACKGROUND IMAGES TUCKED UNDER NAVBAR) -->
     <section class="-mt-20 pt-28 pb-16 lg:pt-36 lg:pb-24 relative overflow-hidden bg-slate-950 text-white border-b border-slate-800 shadow-[inset_0_14px_28px_rgba(0,0,0,0.65)]"
              x-data="{
@@ -77,9 +77,9 @@
                     <span class="text-emerald-300">100% Open Source</span>
                 </div>
 
-                <!-- Main Headline -->
+                <!-- Main Headline (Optimized for 'PocketSQL' and 'Run MySQL Database on Android') -->
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-md">
-                    Run a Full <span class="text-blue-400 underline decoration-blue-500/40 decoration-wavy underline-offset-8">MySQL</span> Database on Your Android Device.
+                    PocketSQL — Run Full <span class="text-blue-400 underline decoration-blue-500/40 decoration-wavy underline-offset-8">MySQL</span> Database on Your Android Device.
                 </h1>
 
                 <!-- Subtext -->
@@ -133,6 +133,11 @@
             </div>
         </div>
     </section>
+
+    <!-- Top Ad Banner Directly Below Hero Section -->
+    <div class="bg-slate-50/70 border-b border-slate-200/80 py-4">
+        <x-ad-slot type="horizontal" class="my-0" />
+    </div>
 
     <!-- 2. QUICK FEATURES GRID (6 CARDS - MAX 10PX RADIUS) -->
     <section class="py-20 bg-white">
@@ -223,8 +228,79 @@
         </div>
     </section>
 
+    <!-- 2.5 HOW POCKETSQL WORKS: 3-STEP ZERO-SETUP ARCHITECTURE (HIGH-INTENT SEO CONTENT) -->
+    <section class="py-20 bg-slate-900 text-white border-y border-slate-800 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3 reveal-on-scroll">
+                <span class="text-xs font-bold uppercase tracking-wider text-blue-400 bg-blue-950/80 px-3.5 py-1.5 rounded-[10px] border border-blue-800/80">Workflow &amp; Architecture</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                    How PocketSQL Turns Any Android Phone into a Database Server
+                </h2>
+                <p class="text-base text-slate-300 leading-relaxed">
+                    Unlike heavy Termux environments or complex Linux chroots, PocketSQL runs natively on Android ART with zero root privileges, providing an instant SQL endpoint in seconds.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Step 1 -->
+                <div class="bg-slate-950/60 border border-slate-800 rounded-[10px] p-6 space-y-4 hover-lift reveal-on-scroll reveal-delay-1 relative">
+                    <div class="w-12 h-12 rounded-[10px] bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-extrabold text-lg">
+                        01
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-bold text-white">One-Tap Install (Zero Root)</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Install the official signed APK or install via Google Play. PocketSQL executes strictly within Android's sandboxed user space. No Magisk, SuperSU, proot, or custom ROMs needed.
+                        </p>
+                    </div>
+                    <div class="pt-2 text-xs font-mono text-emerald-400 flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                        <span>Android 10 - 15 Verified</span>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-slate-950/60 border border-slate-800 rounded-[10px] p-6 space-y-4 hover-lift reveal-on-scroll reveal-delay-2 relative">
+                    <div class="w-12 h-12 rounded-[10px] bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-extrabold text-lg">
+                        02
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-bold text-white">Persistent Foreground Daemon</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Launch the Background HTTP/TLS REST server on port 8080 (auto-failover up to 8099). An Android Foreground Service keeps the database active even when the screen is locked or idle.
+                        </p>
+                    </div>
+                    <div class="pt-2 text-xs font-mono text-blue-400 flex items-center space-x-2">
+                        <i class="fa-solid fa-bolt text-blue-400"></i>
+                        <span>Survives Android Doze Mode</span>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-slate-950/60 border border-slate-800 rounded-[10px] p-6 space-y-4 hover-lift reveal-on-scroll reveal-delay-3 relative">
+                    <div class="w-12 h-12 rounded-[10px] bg-purple-600/20 text-purple-400 border border-purple-500/30 flex items-center justify-center font-extrabold text-lg">
+                        03
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-bold text-white">Query via CLI, LAN, or Scripts</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Run queries on-device with the JetBrains Mono terminal CLI, or connect external laptops, IoT boards, and scripts over local Wi-Fi or phone hotspot using JSON API requests.
+                        </p>
+                    </div>
+                    <div class="pt-2 text-xs font-mono text-purple-400 flex items-center space-x-2">
+                        <i class="fa-solid fa-network-wired text-purple-400"></i>
+                        <span>Python • JS • cURL • Java • PHP</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
     <!-- 3. APP SCREENSHOTS SHOWCASE (REAL MOBILE SCREENS - CUSTOMIZABLE FROM ADMIN) -->
-    <section class="py-20 bg-slate-50 border-y border-slate-200">
+    <section class="py-20 bg-slate-50 border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4 reveal-on-scroll">
                 <div class="space-y-2">
@@ -260,6 +336,110 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- 3.5 ENTERPRISE SQL ENGINE CAPABILITIES & LANGUAGE SPECIFICATION (SEO CONTENT EXPANSION) -->
+    <section class="py-20 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3 reveal-on-scroll">
+                <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-white px-3 py-1 rounded-[10px] border border-slate-200">SQL Dialect &amp; Capabilities</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Full Relational SQL Standard in Your Pocket
+                </h2>
+                <p class="text-base text-slate-600 leading-relaxed">
+                    PocketSQL isn't a stripped-down key-value store or rudimentary viewer. It provides a complete relational engine capable of executing complex analytical queries, transaction workflows, and data transformations.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Spec 1: Relational Joins & Subqueries -->
+                <div class="bg-white border border-slate-200 rounded-[10px] p-6 space-y-3 hover-lift reveal-on-scroll reveal-delay-1 shadow-2xs">
+                    <div class="w-10 h-10 rounded-[8px] bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-code-merge"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">Relational Joins &amp; Subqueries</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Execute multi-table `INNER JOIN`, `LEFT OUTER JOIN`, `CROSS JOIN`, correlated subqueries, and `UNION ALL` statements. Filter with complex boolean expressions and regex patterns.
+                    </p>
+                    <div class="font-mono text-[11px] text-blue-700 bg-blue-50/70 p-2.5 rounded-[8px] border border-blue-100">
+                        SELECT u.id, o.sum FROM users u JOIN (SELECT user_id, SUM(total) as sum FROM orders GROUP BY user_id) o ON u.id = o.user_id;
+                    </div>
+                </div>
+
+                <!-- Spec 2: Window Functions -->
+                <div class="bg-white border border-slate-200 rounded-[10px] p-6 space-y-3 hover-lift reveal-on-scroll reveal-delay-2 shadow-2xs">
+                    <div class="w-10 h-10 rounded-[8px] bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">Analytical Window Functions</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Compute running totals, rankings, and lead/lag values using `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE(n)`, `LEAD()`, and `LAG()` over partition windows without client-side looping.
+                    </p>
+                    <div class="font-mono text-[11px] text-emerald-700 bg-emerald-50/70 p-2.5 rounded-[8px] border border-emerald-100">
+                        SELECT id, score, NTILE(4) OVER (ORDER BY score DESC) as quartile FROM leaderboard;
+                    </div>
+                </div>
+
+                <!-- Spec 3: Full ACID Transactions -->
+                <div class="bg-white border border-slate-200 rounded-[10px] p-6 space-y-3 hover-lift reveal-on-scroll reveal-delay-3 shadow-2xs">
+                    <div class="w-10 h-10 rounded-[8px] bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">ACID Transactions &amp; WAL</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Execute multi-statement transactions with `BEGIN TRANSACTION`, `SAVEPOINT`, `ROLLBACK`, and `COMMIT`. Write-Ahead Logging (WAL) ensures zero data corruption even if phone battery dies.
+                    </p>
+                    <div class="font-mono text-[11px] text-purple-700 bg-purple-50/70 p-2.5 rounded-[8px] border border-purple-100">
+                        BEGIN; UPDATE accounts SET bal = bal - 500 WHERE id = 1; UPDATE accounts SET bal = bal + 500 WHERE id = 2; COMMIT;
+                    </div>
+                </div>
+
+                <!-- Spec 4: MySQL System Tables -->
+                <div class="bg-white border border-slate-200 rounded-[10px] p-6 space-y-3 hover-lift reveal-on-scroll reveal-delay-1 shadow-2xs">
+                    <div class="w-10 h-10 rounded-[8px] bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">40+ MySQL System Tables</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Emulates `information_schema.tables`, `information_schema.columns`, `information_schema.schemata`, and system stats so database introspection tools and drivers work seamlessly.
+                    </p>
+                    <div class="font-mono text-[11px] text-amber-700 bg-amber-50/70 p-2.5 rounded-[8px] border border-amber-100">
+                        SELECT table_name, table_rows FROM information_schema.tables WHERE table_schema = 'main';
+                    </div>
+                </div>
+
+                <!-- Spec 5: On-Device TLS 1.3 & Tokens -->
+                <div class="bg-white border border-slate-200 rounded-[10px] p-6 space-y-3 hover-lift reveal-on-scroll reveal-delay-2 shadow-2xs">
+                    <div class="w-10 h-10 rounded-[8px] bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">On-Device TLS 1.3 &amp; API Keys</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Generate local X.509 certificates directly on Android for encrypted HTTPS connections. Protect access to each database using granular Bearer tokens backed by Android Keystore.
+                    </p>
+                    <div class="font-mono text-[11px] text-cyan-700 bg-cyan-50/70 p-2.5 rounded-[8px] border border-cyan-100">
+                        Authorization: Bearer psql_live_sec_a7f920bc48e...
+                    </div>
+                </div>
+
+                <!-- Spec 6: High-Speed Batch Import/Export -->
+                <div class="bg-white border border-slate-200 rounded-[10px] p-6 space-y-3 hover-lift reveal-on-scroll reveal-delay-3 shadow-2xs">
+                    <div class="w-10 h-10 rounded-[8px] bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-file-zipper"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">Multi-Format Batch Exporter</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Seamlessly import large CSVs and dump entire databases into SQL DUMP scripts, Excel XLSX spreadsheets, ZIP compressed archives, or encrypted SQLCipher SQLite `.db` binaries.
+                    </p>
+                    <div class="font-mono text-[11px] text-rose-700 bg-rose-50/70 p-2.5 rounded-[8px] border border-rose-100">
+                        .dump table_name --format=xlsx --compress=gzip
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -352,6 +532,9 @@
             </div>
         </div>
     </section>
+
+    <!-- Single Restrained Sponsor Ad Banner -->
+    <x-ad-slot type="horizontal" />
 
     <!-- 4.5 SEO SECTION: ARCHITECTURE COMPARISON TABLE (TARGETING SEARCH INTENT) -->
     <section class="py-20 bg-slate-50 border-t border-slate-200">
@@ -485,6 +668,61 @@
                     </p>
                 </div>
             </div>
+
+            <!-- 4.7 QUICK DEVELOPER INTEGRATION & NETWORKING GUIDE (SEO CONTENT EXPANSION) -->
+            <div class="mt-16 bg-white border border-slate-200 rounded-[10px] p-6 sm:p-8 space-y-6 shadow-xs reveal-on-scroll hover-lift">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div class="space-y-1">
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-[10px] border border-blue-200">Zero Cloud Setup</span>
+                        <h3 class="text-2xl font-extrabold text-slate-900">How to Connect to PocketSQL from Any Machine</h3>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs font-mono text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-[8px] border border-emerald-200 w-fit">
+                        <i class="fa-solid fa-wifi"></i>
+                        <span>Zero Internet / Wi-Fi Hotspot Friendly</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-600">
+                    <div class="space-y-2">
+                        <div class="font-bold text-slate-900 flex items-center space-x-2">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">1</span>
+                            <span>Connect to Same Network</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-500">
+                            Connect your laptop or microcontroller to the same Wi-Fi router, or simply turn on your phone's personal hotspot and connect your development machine directly. No active internet connection is required.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="font-bold text-slate-900 flex items-center space-x-2">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">2</span>
+                            <span>Inspect IP &amp; Port on Phone</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-500">
+                            Open the PocketSQL app and tap <strong>Start API Server</strong>. The app immediately displays your phone's local network IP address (e.g., <code class="text-blue-600 bg-blue-50 px-1 py-0.5 rounded">192.168.1.100:8080</code>) and your scoped Bearer token.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="font-bold text-slate-900 flex items-center space-x-2">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">3</span>
+                            <span>Query from Code or Terminal</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-500">
+                            Send JSON payloads with standard HTTP POST requests from Python scripts, Node.js backends, Go microservices, Postman, or cURL. Receive clean JSON arrays with column schemas and microsecond latency.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-slate-200 p-4 rounded-[8px] font-mono text-xs overflow-x-auto dark-scrollbar border border-slate-800">
+                    <div class="text-slate-400 mb-1"># Test connection directly from your laptop terminal in 1 second:</div>
+                    <span class="text-emerald-400">curl</span> -X POST http://&lt;phone-ip&gt;:8080/api/query \<br>
+                    &nbsp;&nbsp;-H <span class="text-amber-300">"Authorization: Bearer YOUR_API_KEY"</span> \<br>
+                    &nbsp;&nbsp;-H <span class="text-amber-300">"Content-Type: application/json"</span> \<br>
+                    &nbsp;&nbsp;-d <span class="text-cyan-300">'{"database":"ecommerce","sql":"SELECT sqlite_version(), CURRENT_TIMESTAMP;"}'</span>
+                </div>
+            </div>
+
         </div>
     </section>
 

@@ -1,7 +1,7 @@
 <x-layout 
-    title="Download Official APK &amp; Release Archive — PocketSQL"
-    description="Download the latest official signed Android APK for PocketSQL or install via Google Play Store. Verify SHA-256 checksums, inspect release notes, and install on Android 10+."
-    keywords="download pocketsql apk, android sql apk, pocketsql direct download, offline sqlite android apk, pocketsql releases"
+    title="Download PocketSQL — Official Android APK &amp; Google Play Release"
+    description="Download official PocketSQL APK or install via Google Play Store. Verify SHA-256 cryptographic checksums, view release notes, and run an offline SQL server on Android 10+."
+    keywords="PocketSQL download, download pocketsql apk, pocketsql apk, pocketsql google play, pocketsql releases, android sql database apk, download pocketsql direct"
 >
 
     <!-- Page Header -->
@@ -135,6 +135,9 @@
                 </x-card>
             </div>
         </section>
+
+        <!-- Single Restrained Sponsor Ad Banner -->
+        <x-ad-slot type="horizontal" class="my-6" />
 
         <!-- 3. Previous Releases Table -->
         <section class="space-y-4">
