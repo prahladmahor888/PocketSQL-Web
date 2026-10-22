@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # Allow Let's Encrypt / Hostinger SSL Verification Challenge
+    RewriteRule ^\.well-known/ - [L]
+
     # 1. Protect Sensitive Configuration & Core Files from Direct Web Access
     <FilesMatch "^\.(env|git|sqlite|log|ini|yml|yaml|md)">
         Order allow,deny
