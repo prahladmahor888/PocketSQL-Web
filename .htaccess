@@ -19,7 +19,7 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # 3. Route All Public Traffic into /public for XAMPP / Apache
-    RewriteCond %{REQUEST_URI} !/public/ [NC]
-    RewriteRule ^(.*)$ /PocketSQL/public/$1 [L,R=302]
+    # 3. Route All Traffic into /public for Laravel
+    RewriteRule ^$ public/index.php [L]
+    RewriteRule ^((?!public/).*)$ public/$1 [L]
 </IfModule>
