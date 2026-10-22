@@ -78,7 +78,9 @@
                            id="email" 
                            name="email" 
                            required 
-                           value="{{ old('email', 'admin@pocketsql.app') }}"
+                           value="{{ old('email') }}"
+                           placeholder="admin@yourdomain.com"
+                           autocomplete="username"
                            class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs text-slate-900 font-mono">
                 </div>
 
@@ -91,7 +93,8 @@
                            id="password" 
                            name="password" 
                            required 
-                           value="password"
+                           placeholder="••••••••••••"
+                           autocomplete="current-password"
                            class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs text-slate-900 font-mono">
                 </div>
 
@@ -100,7 +103,6 @@
                         <input type="checkbox" name="remember" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
                         <span>Remember session</span>
                     </label>
-                    <span class="text-slate-400 font-mono text-[11px]">Demo: password</span>
                 </div>
 
                 <div class="pt-2">

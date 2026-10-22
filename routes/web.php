@@ -48,6 +48,11 @@ Route::get('/robots.txt', [HomeController::class, 'robots'])->name('robots');
 */
 
 Route::get('/login', fn() => redirect()->route('admin.login'))->name('login');
+Route::get('/admin', function () {
+    return Auth::check() 
+        ? redirect()->route('admin.dashboard') 
+        : redirect()->route('admin.login');
+})->name('admin');
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
@@ -93,20 +98,3 @@ Route::prefix('admin')->middleware(['auth', 'admin.timeout'])->name('admin.')->g
     Route::match(['delete', 'post'], '/donations/{donation}/delete', [AdminDonationController::class, 'destroy'])->name('donations.destroy.post');
     Route::match(['delete', 'post'], '/donations/{donation}', [AdminDonationController::class, 'destroy'])->name('donations.destroy');
 });
-
-Route::get('/system-migrate-now', function () {
-    try {
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        $migrateOutput = \Illuminate\Support\Facades\Artisan::output();
-
-        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-        $seedOutput = \Illuminate\Support\Facades\Artisan::output();
-
-        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-
-        return response("<pre style='background:#111;color:#0f0;padding:20px;font-family:monospace;'>=== MIGRATION SUCCESSFUL ===\n\n" . $migrateOutput . "\n" . $seedOutput . "</pre>");
-    } catch (\Throwable $e) {
-        return response("<pre style='background:#111;color:#f33;padding:20px;font-family:monospace;'>ERROR: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "</pre>", 500);
-    }
-});
-

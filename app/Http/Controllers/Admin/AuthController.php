@@ -26,9 +26,8 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $settings = AppSetting::instance();
-        $maxAttempts = (int) ($settings->admin_login_max_attempts ?? 3);
-        $decaySeconds = 300; // 5 minutes lockout after max attempts exceeded
+        $maxAttempts = 3;
+        $decaySeconds = 300; // 5 minutes lockout after 3 failed attempts
 
         $throttleKey = Str::transliterate(Str::lower($request->input('email')) . '|' . $request->ip());
         $ipThrottleKey = 'login_ip:' . $request->ip();

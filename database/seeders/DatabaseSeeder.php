@@ -21,11 +21,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 1. Admin User
+        $adminEmail = env('ADMIN_EMAIL', 'admin@pocketsql.app');
+        $adminPassword = env('ADMIN_PASSWORD', 'Mr.x@2026#Radha108*');
         User::updateOrCreate(
-            ['email' => 'admin@pocketsql.app'],
+            ['email' => $adminEmail],
             [
                 'name' => 'PocketSQL Admin',
-                'password' => Hash::make('password'),
+                'password' => Hash::make($adminPassword),
             ]
         );
 
