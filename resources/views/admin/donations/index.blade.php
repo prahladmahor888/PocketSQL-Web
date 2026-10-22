@@ -20,6 +20,10 @@
                     <i class="fa-solid fa-arrow-up-right-from-square text-[11px] text-slate-400"></i>
                     <span>Public Donate Page</span>
                 </a>
+                <a href="{{ route('admin.donation-tiers.index') }}" class="px-3.5 py-2 rounded-[8px] bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs shadow-emerald-500/20 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-layer-group text-[11px]"></i>
+                    <span>Amount Cards &amp; Presets</span>
+                </a>
                 <a href="{{ route('admin.settings') }}#razorpay-config" class="px-3.5 py-2 rounded-[8px] bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs shadow-blue-500/20 transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-key text-[11px]"></i>
                     <span>Razorpay Keys</span>

@@ -21,7 +21,7 @@ class ReleaseController extends Controller
         $validated = $request->validate([
             'version' => 'required|string|max:50',
             'version_code' => 'required|integer|min:1',
-            'release_date' => 'required|string',
+            'release_date' => 'nullable|string',
             'apk_size' => 'nullable|string',
             'sha256_hash' => 'nullable|string',
             'changelog' => 'required|string',
@@ -72,10 +72,14 @@ class ReleaseController extends Controller
             ]);
         }
 
-        Release::create([
+        $releaseDate = !empty($validated['release_date'])
+            ? $validated['release_date']
+            : now()->format('F d, Y');
+
+        $release = Release::create([
             'version' => $validated['version'],
             'version_code' => $validated['version_code'],
-            'release_date' => $validated['release_date'],
+            'release_date' => $releaseDate,
             'apk_size' => $apkSize ?? '12.4 MB',
             'sha256_hash' => $sha256 ?? hash('sha256', Str::random(32)),
             'changelog' => $validated['changelog'],
@@ -83,15 +87,33 @@ class ReleaseController extends Controller
             'is_latest' => $isLatest,
         ]);
 
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'New release "' . $release->version . '" published successfully.',
+                'release' => [
+                    'id' => $release->id,
+                    'version' => $release->version,
+                    'version_code' => $release->version_code,
+                    'release_date' => $release->release_date,
+                    'apk_size' => $release->apk_size,
+                    'downloads_count' => (int) ($release->downloads_count ?? 0),
+                    'is_latest' => (bool) $release->is_latest,
+                    'download_url' => $release->download_url,
+                ],
+            ]);
+        }
+
         return redirect()->route('admin.releases.index')->with('success', 'New release and APK package published successfully.');
     }
 
-    public function destroy(Release $release)
+    public function destroy(Request $request, Release $release)
     {
         $wasLatest = $release->is_latest;
         $version = $release->version;
         $release->delete();
 
+        $nextLatest = null;
         if ($wasLatest) {
             $nextLatest = Release::orderBy('id', 'desc')->first();
             if ($nextLatest) {
@@ -101,6 +123,14 @@ class ReleaseController extends Controller
                     'version_code' => $nextLatest->version_code,
                 ]);
             }
+        }
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Release "' . $version . '" deleted successfully.',
+                'next_latest_id' => $nextLatest ? $nextLatest->id : null,
+            ]);
         }
 
         return redirect()->route('admin.releases.index')->with('success', 'Release "' . $version . '" deleted successfully.');

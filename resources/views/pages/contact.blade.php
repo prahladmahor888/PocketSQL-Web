@@ -38,6 +38,33 @@
                     </a>
                 </x-card>
 
+                @if(!empty($settings->contact_phone))
+                    <!-- Phone / WhatsApp Card -->
+                    <x-card class="space-y-2">
+                        <div class="flex items-center space-x-3 text-emerald-600">
+                            <i class="fa-solid fa-phone text-sm"></i>
+                            <h3 class="text-sm font-bold text-slate-900">Direct Contact / WhatsApp</h3>
+                        </div>
+                        <p class="text-xs text-slate-600">Reach our technical coordination desk:</p>
+                        <a href="tel:{{ preg_replace('/[^0-9+]/', '', $settings->contact_phone) }}" class="text-sm font-mono font-bold text-slate-900 hover:text-blue-600 block pt-1">
+                            {{ $settings->contact_phone }}
+                        </a>
+                    </x-card>
+                @endif
+
+                @if(!empty($settings->contact_address))
+                    <!-- Office Address Card -->
+                    <x-card class="space-y-2">
+                        <div class="flex items-center space-x-3 text-amber-600">
+                            <i class="fa-solid fa-location-dot text-sm"></i>
+                            <h3 class="text-sm font-bold text-slate-900">Operating / Office Location</h3>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed pt-0.5">
+                            {{ $settings->contact_address }}
+                        </p>
+                    </x-card>
+                @endif
+
                 <!-- GitHub Issues Card -->
                 <x-card class="space-y-2">
                     <div class="flex items-center space-x-3 text-slate-900">
@@ -58,9 +85,9 @@
                     </div>
                     <p class="text-xs text-slate-600">Join our Discord server or official Telegram discussion channel:</p>
                     <div class="flex items-center space-x-3 pt-1 text-xs">
-                        <a href="https://discord.gg/pocketsql" target="_blank" rel="noopener" class="text-indigo-600 font-semibold hover:underline">Discord Server</a>
+                        <a href="{{ $settings->discord_url ?: 'https://discord.gg/pocketsql' }}" target="_blank" rel="noopener" class="text-indigo-600 font-semibold hover:underline">Discord Server</a>
                         <span class="text-slate-300">•</span>
-                        <a href="https://t.me/pocketsql_official" target="_blank" rel="noopener" class="text-blue-500 font-semibold hover:underline">Telegram Group</a>
+                        <a href="{{ $settings->telegram_url ?: 'https://t.me/pocketsql_official' }}" target="_blank" rel="noopener" class="text-blue-500 font-semibold hover:underline">Telegram Group</a>
                     </div>
                 </x-card>
 
@@ -70,7 +97,7 @@
                         <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
                         Response Commitment
                     </div>
-                    <p>All direct inquiries receive an answer within 24 to 48 business hours.</p>
+                    <p>{{ $settings->support_hours ?: 'All direct inquiries receive an answer within 24 to 48 business hours.' }}</p>
                 </div>
             </div>
 

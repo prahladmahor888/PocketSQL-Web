@@ -21,18 +21,39 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // 1. SQL Injection Protection on Authentication Inputs
+        $rawEmail = (string) $request->input('email', '');
+        $sqliPatterns = [
+            "/'\s*(or|and)\s*['\d]/i",
+            '/union\s+(all\s+)?select/i',
+            '/(\-\-|\#|\/\*)/',
+            '/;\s*(drop|alter|delete|insert|update|truncate)/i',
+            '/sleep\s*\(\s*\d+\s*\)/i',
+            '/benchmark\s*\(/i',
+            '/information_schema/i',
+        ];
+
+        foreach ($sqliPatterns as $pattern) {
+            if (preg_match($pattern, $rawEmail)) {
+                RateLimiter::hit('login_ip:' . $request->ip(), 18000);
+                return back()->withErrors([
+                    'email' => 'Security Alert: Malicious SQL injection sequence detected. Request blocked and IP logged.',
+                ])->onlyInput('email');
+            }
+        }
+
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', 'max:255'],
         ]);
 
         $maxAttempts = 3;
-        $decaySeconds = 300; // 5 minutes lockout after 3 failed attempts
+        $decaySeconds = 18000; // 5 hours lockout (5 * 3600 seconds)
 
         $throttleKey = Str::transliterate(Str::lower($request->input('email')) . '|' . $request->ip());
         $ipThrottleKey = 'login_ip:' . $request->ip();
 
-        // 1. Check IP-wide brute force lockout (10 attempts across all accounts per 10 mins)
+        // 2. Check IP-wide brute force lockout (10 attempts across all accounts per 10 mins)
         if (RateLimiter::tooManyAttempts($ipThrottleKey, 10)) {
             $seconds = RateLimiter::availableIn($ipThrottleKey);
             $minutes = ceil($seconds / 60);
@@ -42,13 +63,15 @@ class AuthController extends Controller
             ])->onlyInput('email');
         }
 
-        // 2. Check targeted account brute force lockout (3 attempts per account+IP per 5 mins)
+        // 3. Check targeted account brute force lockout (3 attempts per account+IP per 5 hours)
         if (RateLimiter::tooManyAttempts($throttleKey, $maxAttempts)) {
             $seconds = RateLimiter::availableIn($throttleKey);
-            $minutes = ceil($seconds / 60);
+            $hours = floor($seconds / 3600);
+            $minutes = ceil(($seconds % 3600) / 60);
+            $timeRemaining = $hours > 0 ? "{$hours} hr {$minutes} min" : "{$minutes} min";
 
             return back()->withErrors([
-                'email' => "Security Alert: Too many failed login attempts (Maximum {$maxAttempts}). Access locked for safety. Please retry in {$seconds} seconds (~{$minutes} min).",
+                'email' => "Security Alert: Maximum {$maxAttempts} login attempts exceeded. Account locked for 5 hours. Please retry in {$timeRemaining}.",
             ])->onlyInput('email');
         }
 
@@ -66,18 +89,22 @@ class AuthController extends Controller
 
         // Login failed -> increment both rate limiters
         RateLimiter::hit($throttleKey, $decaySeconds);
-        RateLimiter::hit($ipThrottleKey, 600);
+        RateLimiter::hit($ipThrottleKey, 18000);
         $remaining = RateLimiter::remaining($throttleKey, $maxAttempts);
 
         if ($remaining <= 0) {
             $seconds = RateLimiter::availableIn($throttleKey);
+            $hours = floor($seconds / 3600);
+            $minutes = ceil(($seconds % 3600) / 60);
+            $timeRemaining = $hours > 0 ? "{$hours} hr {$minutes} min" : "{$minutes} min";
+
             return back()->withErrors([
-                'email' => "Maximum {$maxAttempts} attempts reached! Security lockout activated. Please try again in {$seconds} seconds.",
+                'email' => "Maximum {$maxAttempts} attempts reached! Security lockout activated for 5 hours. Please try again in {$timeRemaining}.",
             ])->onlyInput('email');
         }
 
         return back()->withErrors([
-            'email' => "Invalid administrative credentials. You have {$remaining} of {$maxAttempts} attempt(s) remaining before account lockout.",
+            'email' => "Invalid administrative credentials. You have {$remaining} of {$maxAttempts} attempt(s) remaining before a 5-hour lockout.",
         ])->onlyInput('email');
     }
 

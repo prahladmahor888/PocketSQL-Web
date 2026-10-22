@@ -19,7 +19,7 @@ class PocketSqlWebTest extends TestCase
     public function test_all_public_pages_render_successfully(): void
     {
         $pages = [
-            '/' => 'Run a Full',
+            '/' => 'PocketSQL',
             '/about' => 'The Story Behind PocketSQL',
             '/features' => 'Full Technical Feature Matrix',
             '/docs' => 'HTTP & REST API Reference',
@@ -263,7 +263,7 @@ class PocketSqlWebTest extends TestCase
             'password' => 'wrongpass4',
         ]);
         $res4->assertSessionHasErrors('email');
-        $this->assertStringContainsString('Security Alert: Too many failed login attempts', session('errors')->first('email'));
+        $this->assertStringContainsString('Security Alert: Maximum 3 login attempts exceeded', session('errors')->first('email'));
     }
 
     /**

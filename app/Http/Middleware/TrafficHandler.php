@@ -46,9 +46,13 @@ class TrafficHandler
         $ua = $request->userAgent() ?? '';
         $isGoodSearchBot = $this->isVerifiedSearchBot($ua);
 
+        $isLocal = ($ip === '127.0.0.1' || $ip === '::1');
+
         // 1. Exploit Probe Detection (Auto-Ban IP for 48 Hours)
         if ($exploitPattern = $this->isExploitProbe($path)) {
-            BlockedIp::blockIp($ip, "Automated exploit probe: {$exploitPattern} ({$path})", 48);
+            if (!$isLocal) {
+                BlockedIp::blockIp($ip, "Automated exploit probe: {$exploitPattern} ({$path})", 48);
+            }
             $this->recordTrafficLog($ip, $request->method(), $path, 403, $ua, 0, true);
 
             return response()->view('errors.traffic-blocked', [
@@ -57,7 +61,27 @@ class TrafficHandler
             ], 403);
         }
 
-        // 2. Malicious Bot & Scraper Detection (Instant 403)
+        // 2. SQL Injection Inspection (Auto-Ban IP for 24 Hours)
+        if ($sqliReason = $this->detectSqlInjection($request)) {
+            if (!$isLocal) {
+                BlockedIp::blockIp($ip, "SQL Injection attempt: {$sqliReason}", 24);
+            }
+            $this->recordTrafficLog($ip, $request->method(), $path, 403, $ua, 0, true);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Security Alert: Malicious SQL injection sequence detected. Request blocked.',
+                ], 403);
+            }
+
+            return response()->view('errors.traffic-blocked', [
+                'ip' => $ip,
+                'message' => 'Security Alert: Malicious SQL injection sequence detected. Access blocked.',
+            ], 403);
+        }
+
+        // 3. Malicious Bot & Scraper Detection (Instant 403)
         if (!$isGoodSearchBot && ($botReason = $this->isMaliciousBot($request))) {
             $this->recordTrafficLog($ip, $request->method(), $path, 403, $ua, 0, true);
 
@@ -141,7 +165,7 @@ class TrafficHandler
         $response->headers->set('X-XSS-Protection', '1; mode=block');
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-        $response->headers->set('Content-Security-Policy', "default-src 'self' https: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://lumberjack-cx.razorpay.com; frame-src 'self' https://api.razorpay.com; child-src 'self' https://api.razorpay.com; frame-ancestors 'self';");
+        $response->headers->set('Content-Security-Policy', "default-src 'self' https: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://lumberjack-cx.razorpay.com; frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com; child-src 'self' https://api.razorpay.com https://checkout.razorpay.com; frame-ancestors 'self';");
 
         if ($request->isSecure() || $request->header('X-Forwarded-Proto') === 'https') {
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
@@ -315,4 +339,93 @@ class TrafficHandler
             // Fail silently to never break user requests if logging fails
         }
     }
+
+    /**
+     * Comprehensive OWASP SQL Injection Detection Engine
+     * Inspects URI paths, raw query strings, input payloads, JSON bodies, and headers.
+     */
+    protected function detectSqlInjection(Request $request): ?string
+    {
+        $sqliSignatures = [
+            '/\bunion\s+(all\s+|distinct\s+)?select\b/i' => 'Union-based SQL injection',
+            "/'\s*(or|and)\s*('|\d+=|true\b|1=1\b)/i" => 'Boolean-based SQL injection',
+            '/\"\s*(or|and)\s*(\"|\d+=|true\b|1=1\b)/i' => 'Double-quote boolean SQL injection',
+            '/\b(or|and)\s+1\s*=\s*1\b/i' => 'Tautology SQL injection',
+            "/'\s*or\s*'[\w]+'\s*=\s*'[\w]+/i" => 'String tautology SQL injection',
+            '/admin[\'"]\s*(\-\-|\#|\/\*)/i' => 'Admin auth bypass SQL comment',
+            '/\b(sleep|benchmark|pg_sleep)\s*\(\s*\d+\s*\)/i' => 'Time-based blind SQL injection',
+            '/\bwaitfor\s+delay\s+[\'"][\d:]+[\'"]/i' => 'MSSQL delay blind SQL injection',
+            '/;\s*(drop|alter|truncate)\s+(table|database|schema)\b/i' => 'DDL destructive SQL injection',
+            '/;\s*(insert\s+into|delete\s+from|update\s+[\w]+\s+set)\b/i' => 'Stacked query manipulation',
+            '/\b(information_schema|performance_schema)\b/i' => 'Database schema enumeration',
+            '/\b(schema_name|table_schema|column_name)\s*(=|like|in)\b/i' => 'Catalog enumeration SQL injection',
+            '/\b(extractvalue|updatexml|gtid_subset)\s*\(/i' => 'Error-based XML SQL injection',
+            '/\b(database|schema|system_user|current_user|version)\s*\(\s*\)/i' => 'System function footprinting',
+            '/\b@@(version|version_compile_os|hostname|datadir|basedir)\b/i' => 'Database server variable footprinting',
+            '/\b(load_file|into\s+outfile|into\s+dumpfile)\b/i' => 'Out-of-band file I/O SQL injection',
+            '/\/\*![0-9]*[a-zA-Z]/i' => 'MySQL inline comment evasion attack',
+            '/\bchar\s*\(\s*\d+\s*(,\s*\d+\s*)+\)/i' => 'Char encoded SQL injection vector',
+        ];
+
+        // 1. Inspect decoded URI path
+        $decodedPath = rawurldecode($request->path());
+        foreach ($sqliSignatures as $pattern => $label) {
+            if (preg_match($pattern, $decodedPath)) {
+                return "{$label} in URL path";
+            }
+        }
+
+        // 2. Inspect raw and decoded query strings
+        $rawQuery = (string) $request->server('QUERY_STRING', '');
+        $decodedQuery = rawurldecode($rawQuery);
+        foreach ($sqliSignatures as $pattern => $label) {
+            if (($rawQuery !== '' && preg_match($pattern, $rawQuery)) ||
+                ($decodedQuery !== '' && preg_match($pattern, $decodedQuery))) {
+                return "{$label} in query string";
+            }
+        }
+
+        // 3. Inspect raw request body (for raw JSON / XML / text payloads)
+        $rawBody = (string) $request->getContent();
+        if ($rawBody !== '' && strlen($rawBody) < 65536) {
+            $decodedBody = rawurldecode($rawBody);
+            foreach ($sqliSignatures as $pattern => $label) {
+                if (preg_match($pattern, $rawBody) || preg_match($pattern, $decodedBody)) {
+                    return "{$label} in request payload";
+                }
+            }
+        }
+
+        // 4. Recursively inspect all parsed input parameters & parameter keys
+        $inputs = $request->except(['_token', 'password']);
+        $flattened = $this->flattenInputsForSecurityScan($inputs);
+
+        foreach ($flattened as $key => $value) {
+            foreach ($sqliSignatures as $pattern => $label) {
+                if (preg_match($pattern, $value) || preg_match($pattern, (string) $key)) {
+                    return "{$label} in parameter [{$key}]";
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Recursively flatten multidimensional inputs for security scanning
+     */
+    protected function flattenInputsForSecurityScan(array $inputs, string $prefix = ''): array
+    {
+        $result = [];
+        foreach ($inputs as $key => $value) {
+            $fullKey = $prefix !== '' ? "{$prefix}.{$key}" : (string) $key;
+            if (is_array($value)) {
+                $result = array_merge($result, $this->flattenInputsForSecurityScan($value, $fullKey));
+            } elseif (is_string($value) || is_numeric($value)) {
+                $result[$fullKey] = (string) $value;
+            }
+        }
+        return $result;
+    }
 }
+

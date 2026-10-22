@@ -40,7 +40,7 @@
             <div class="p-3 bg-blue-50/70 border border-blue-200/80 rounded-[8px] flex items-center justify-between text-xs text-blue-900">
                 <div class="flex items-center space-x-2">
                     <i class="fa-solid fa-shield-halved text-blue-600"></i>
-                    <span class="font-semibold text-[11px]">Strict Security: Only 3 Attempts</span>
+                    <span class="font-semibold text-[11px]">Strict Security: Max 3 Attempts (5-Hour Lockout)</span>
                 </div>
                 <span class="font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-blue-200 text-blue-700 font-bold">
                     Auto-Expire

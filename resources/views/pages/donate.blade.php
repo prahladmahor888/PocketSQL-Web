@@ -57,63 +57,29 @@
 
                     <!-- Presets Grid -->
                     <div class="space-y-3">
-                        <div class="grid grid-cols-3 gap-2.5">
-                            
-                            <!-- ₹100 -->
-                            <button type="button" 
-                                    @click="selectPreset(100)"
-                                    :class="amount == 100 ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500/20 shadow-xs' : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border-slate-200'"
-                                    class="py-2.5 px-3 rounded-[8px] border text-center transition flex flex-col items-center justify-center space-y-0.5">
-                                <span class="font-mono text-base font-bold">₹100</span>
-                                <span class="text-[10px] opacity-80">Supporter</span>
-                            </button>
-
-                            <!-- ₹250 -->
-                            <button type="button" 
-                                    @click="selectPreset(250)"
-                                    :class="amount == 250 ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500/20 shadow-xs' : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border-slate-200'"
-                                    class="py-2.5 px-3 rounded-[8px] border text-center transition flex flex-col items-center justify-center space-y-0.5">
-                                <span class="font-mono text-base font-bold">₹250</span>
-                                <span class="text-[10px] opacity-80">Contributor</span>
-                            </button>
-
-                            <!-- ₹500 (Popular) -->
-                            <button type="button" 
-                                    @click="selectPreset(500)"
-                                    :class="amount == 500 ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500/20 shadow-xs' : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border-slate-200'"
-                                    class="py-2.5 px-3 rounded-[8px] border text-center transition flex flex-col items-center justify-center space-y-0.5 relative">
-                                <span class="absolute -top-2 px-1.5 py-0.2 rounded-[4px] bg-blue-700 text-white text-[9px] font-bold uppercase tracking-wider">Popular</span>
-                                <span class="font-mono text-base font-bold">₹500</span>
-                                <span class="text-[10px] opacity-80">Backer</span>
-                            </button>
-
-                            <!-- ₹1,000 -->
-                            <button type="button" 
-                                    @click="selectPreset(1000)"
-                                    :class="amount == 1000 ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500/20 shadow-xs' : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border-slate-200'"
-                                    class="py-2.5 px-3 rounded-[8px] border text-center transition flex flex-col items-center justify-center space-y-0.5">
-                                <span class="font-mono text-base font-bold">₹1,000</span>
-                                <span class="text-[10px] opacity-80">Advocate</span>
-                            </button>
-
-                            <!-- ₹2,500 -->
-                            <button type="button" 
-                                    @click="selectPreset(2500)"
-                                    :class="amount == 2500 ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500/20 shadow-xs' : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border-slate-200'"
-                                    class="py-2.5 px-3 rounded-[8px] border text-center transition flex flex-col items-center justify-center space-y-0.5">
-                                <span class="font-mono text-base font-bold">₹2,500</span>
-                                <span class="text-[10px] opacity-80">Champion</span>
-                            </button>
-
-                            <!-- ₹5,000 -->
-                            <button type="button" 
-                                    @click="selectPreset(5000)"
-                                    :class="amount == 5000 ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500/20 shadow-xs' : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border-slate-200'"
-                                    class="py-2.5 px-3 rounded-[8px] border text-center transition flex flex-col items-center justify-center space-y-0.5">
-                                <span class="font-mono text-base font-bold">₹5,000</span>
-                                <span class="text-[10px] opacity-80">Patron</span>
-                            </button>
-
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                            @forelse($donationTiers as $tier)
+                                <button type="button" 
+                                        @click="selectPreset({{ $tier->amount }}, '{{ addslashes($tier->impact_heading ?? $tier->name) }}', '{{ addslashes($tier->impact_text ?? '') }}')"
+                                        :class="amount == {{ $tier->amount }} ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500/20 shadow-xs' : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border-slate-200'"
+                                        class="py-2.5 px-3 rounded-[8px] border text-center transition flex flex-col items-center justify-center space-y-0.5 relative group">
+                                    @if($tier->badge || $tier->is_popular)
+                                        <span class="absolute -top-2 px-1.5 py-0.2 rounded-[4px] bg-blue-700 text-white text-[9px] font-bold uppercase tracking-wider shadow-2xs">
+                                            {{ $tier->badge ?: 'Popular' }}
+                                        </span>
+                                    @endif
+                                    <span class="font-mono text-base font-bold">₹{{ number_format($tier->amount) }}</span>
+                                    <span class="text-[10px] opacity-80 truncate max-w-full">{{ $tier->name }}</span>
+                                </button>
+                            @empty
+                                <button type="button" 
+                                        @click="selectPreset({{ $minAmount }}, 'Community Supporter', 'Your contribution keeps PocketSQL free, private, and 100% offline.')"
+                                        :class="amount == {{ $minAmount }} ? 'bg-blue-600 text-white border-blue-600 ring-2 ring-blue-500/20 shadow-xs' : 'bg-slate-50 text-slate-800 hover:bg-slate-100 border-slate-200'"
+                                        class="py-2.5 px-3 rounded-[8px] border text-center transition flex flex-col items-center justify-center space-y-0.5 col-span-3">
+                                    <span class="font-mono text-base font-bold">₹{{ number_format($minAmount) }}</span>
+                                    <span class="text-[10px] opacity-80">Supporter</span>
+                                </button>
+                            @endforelse
                         </div>
 
                         <!-- Custom Amount Input -->
@@ -285,113 +251,70 @@
         </div>
 
         <!-- ======================================================== -->
-        <!-- SUCCESS RECEIPT MODAL                                    -->
+        <!-- SUCCESS RECEIPT MODAL (SCREEN VIEW)                      -->
         <!-- ======================================================== -->
         <div x-show="showReceipt" 
              x-cloak 
              style="display: none;"
-             class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+             class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 print:hidden">
             
             <div @click.away="showReceipt = false" 
-                 class="bg-white rounded-[10px] max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-5 relative">
+                 class="bg-white rounded-[10px] max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 relative my-auto">
                 
                 <button type="button" 
                         @click="showReceipt = false" 
-                        class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 rounded-[6px] hover:bg-slate-100 transition">
+                        class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1.5 rounded-[6px] hover:bg-slate-100 transition">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
 
-                <div class="text-center space-y-2">
-                    <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl">
+                <div class="text-center space-y-2 pt-1">
+                    <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl shadow-xs">
                         <i class="fa-solid fa-circle-check"></i>
                     </div>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-[6px] bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-[6px] bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold uppercase tracking-wider">
                         Payment Successful
                     </span>
                     <h3 class="text-xl font-bold text-slate-900">Thank You, <span x-text="receiptData.donor_name"></span>!</h3>
-                    <p class="text-xs text-slate-500">Your donation supports native SQL database development for Android.</p>
+                    <p class="text-xs text-slate-500">Your contribution powers open-source SQL database development for Android.</p>
                 </div>
 
-                <!-- Receipt Slip -->
-                <div class="p-4 rounded-[8px] bg-slate-50 border border-slate-200 space-y-2 text-xs">
-                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-                        <span class="text-slate-500 font-medium">Donor</span>
+                <!-- Screen Receipt Card -->
+                <div class="p-4 rounded-[10px] bg-slate-50 border border-slate-200 space-y-2.5 text-xs">
+                    <div class="flex items-center justify-between border-b border-slate-200/80 pb-2">
+                        <span class="text-slate-500 font-medium">Contributor</span>
                         <span class="font-bold text-slate-900" x-text="receiptData.donor_name"></span>
                     </div>
-                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-                        <span class="text-slate-500 font-medium">Amount</span>
-                        <span class="font-mono text-sm font-bold text-emerald-600" x-text="receiptData.amount"></span>
+                    <div class="flex items-center justify-between border-b border-slate-200/80 pb-2">
+                        <span class="text-slate-500 font-medium">Contribution Amount</span>
+                        <span class="font-mono text-base font-extrabold text-emerald-600" x-text="receiptData.amount"></span>
                     </div>
-                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <div class="flex items-center justify-between border-b border-slate-200/80 pb-2">
                         <span class="text-slate-500 font-medium">Payment ID</span>
-                        <span class="font-mono text-[11px] text-slate-700 select-all" x-text="receiptData.payment_id"></span>
+                        <span class="font-mono text-[11px] font-bold text-slate-800 select-all" x-text="receiptData.payment_id"></span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="text-slate-500 font-medium">Date</span>
-                        <span class="text-slate-700" x-text="receiptData.date"></span>
+                        <span class="text-slate-500 font-medium">Date &amp; Time</span>
+                        <span class="text-slate-700 font-mono text-[11px]" x-text="receiptData.date"></span>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-end space-x-2 pt-1">
+                <!-- Modal Actions -->
+                <div class="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
                     <button type="button" 
-                            @click="window.print()" 
-                            class="px-3.5 py-2 rounded-[8px] border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition flex items-center space-x-1.5">
-                        <i class="fa-solid fa-print text-[11px]"></i>
-                        <span>Print</span>
+                            @click="printReceipt()" 
+                            class="px-4 py-2 rounded-[8px] border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs transition flex items-center space-x-2 shadow-xs cursor-pointer">
+                        <i class="fa-solid fa-file-pdf text-red-500 text-sm"></i>
+                        <span>Print / Save PDF Receipt</span>
                     </button>
                     <button type="button" 
                             @click="showReceipt = false" 
-                            class="px-4 py-2 rounded-[8px] bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition">
+                            class="px-5 py-2 rounded-[8px] bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition cursor-pointer">
                         <span>Done</span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- ======================================================== -->
-        <!-- 2. RECENT COMMUNITY BACKERS                              -->
-        <!-- ======================================================== -->
-        @if($recentDonations->count() > 0)
-            <section class="space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2.5">
-                    <div>
-                        <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
-                            <i class="fa-solid fa-award text-amber-500"></i>
-                            <span>Recent Community Supporters</span>
-                        </h3>
-                        <p class="text-xs text-slate-500">Developers backing the open-source PocketSQL engine.</p>
-                    </div>
-                    <span class="text-xs font-mono font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-[6px]">
-                        {{ $donorCount }} Verified Backers
-                    </span>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    @foreach($recentDonations as $recent)
-                        <div class="p-3.5 rounded-[10px] bg-white border border-slate-200 space-y-2 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2 overflow-hidden">
-                                    <div class="w-6 h-6 rounded-full bg-blue-50 text-blue-600 font-bold text-[11px] flex items-center justify-center flex-shrink-0">
-                                        {{ strtoupper(substr($recent->donor_name, 0, 1)) }}
-                                    </div>
-                                    <span class="font-bold text-xs text-slate-900 truncate">{{ $recent->donor_name }}</span>
-                                </div>
-                                <span class="font-mono text-xs font-bold text-emerald-600 flex-shrink-0">{{ $recent->formatted_amount }}</span>
-                            </div>
-                            <div class="flex items-center justify-between text-[11px] text-slate-400">
-                                <span class="truncate"><i class="{{ $recent->method_icon }} mr-1 text-[10px] text-slate-400"></i>{{ $recent->payment_method ?: 'Razorpay' }}</span>
-                                <span class="font-mono text-[10px] flex-shrink-0">{{ $recent->created_at->diffForHumans() }}</span>
-                            </div>
-                            @if($recent->message)
-                                <p class="text-[11px] text-slate-600 italic bg-slate-50 p-1.5 rounded-[6px] border border-slate-100 line-clamp-2" title="{{ $recent->message }}">
-                                    "{{ $recent->message }}"
-                                </p>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
-            </section>
-        @endif
 
         <!-- GitHub Sponsors Section -->
         <section class="space-y-3">
@@ -441,8 +364,17 @@
         }
 
         function donationApp() {
+            const dynamicTiers = @json($donationTiers);
+            const popularTier = dynamicTiers.find(t => t.is_popular) || dynamicTiers[0] || null;
+            const initAmount = popularTier ? Number(popularTier.amount) : {{ $minAmount }};
+            const initHeading = popularTier ? (popularTier.impact_heading || popularTier.name) : 'Community Impact';
+            const initText = popularTier ? (popularTier.impact_text || 'Your contribution keeps PocketSQL free, private, and 100% offline.') : 'Your contribution keeps PocketSQL free, private, and 100% offline.';
+
             return {
-                amount: {{ $minAmount }},
+                tiers: dynamicTiers,
+                amount: initAmount,
+                currentHeading: initHeading,
+                currentText: initText,
                 donorName: '',
                 donorEmail: '',
                 donorMessage: '',
@@ -452,23 +384,26 @@
                 showReceipt: false,
                 receiptData: {},
 
-                selectPreset(val) {
-                    this.amount = val;
+                selectPreset(val, heading, text) {
+                    this.amount = Number(val);
                     this.errorMessage = '';
+                    if (heading) this.currentHeading = heading;
+                    if (text) this.currentText = text;
                 },
 
                 getImpactHeading() {
-                    if (this.amount >= 2500) return 'Champion Sponsor Tier';
-                    if (this.amount >= 1000) return 'Advocate Sponsor Tier';
-                    if (this.amount >= 500) return 'Backer Sponsor Tier';
-                    return 'Community Supporter';
+                    const matched = this.tiers.find(t => Number(t.amount) === Number(this.amount));
+                    if (matched && matched.impact_heading) return matched.impact_heading;
+                    if (matched && matched.name) return matched.name + ' Tier';
+                    if (this.currentHeading) return this.currentHeading;
+                    return 'Community Impact';
                 },
 
                 getImpactText() {
-                    if (this.amount >= 2500) return 'Directly covers physical Android OEM test hardware acquisition and long-term daemon stability testing.';
-                    if (this.amount >= 1000) return 'Funds native cryptographic TLS certificate updates and continuous background API benchmarking.';
-                    if (this.amount >= 500) return 'Maintains high-speed global APK download server bandwidth and automated release pipelines.';
-                    return 'Covers essential open-source operational costs and keeps PocketSQL 100% free with zero advertisements.';
+                    const matched = this.tiers.find(t => Number(t.amount) === Number(this.amount));
+                    if (matched && matched.impact_text) return matched.impact_text;
+                    if (this.currentText) return this.currentText;
+                    return 'Your contribution keeps PocketSQL free, private, and 100% offline.';
                 },
 
                 loadRazorpayScript() {
@@ -559,7 +494,7 @@
                         const self = this;
                         const options = {
                             key: orderData.key_id,
-                            amount: orderData.amount_paise,
+                            amount: orderData.amount_paise || orderData.amount,
                             currency: orderData.currency || 'INR',
                             name: 'PocketSQL Open Source Project',
                             description: 'Community Sponsorship (' + (orderData.donor_name || 'Supporter') + ')',
@@ -601,12 +536,15 @@
                                         throw new Error(verifyData.message || 'Signature verification failed.');
                                     }
 
+                                    const don = verifyData.donation || {};
                                     self.receiptData = {
-                                        donor_name: verifyData.donation.donor_name,
-                                        amount: verifyData.donation.formatted_amount,
-                                        payment_method: verifyData.donation.payment_method,
-                                        payment_id: verifyData.donation.razorpay_payment_id,
-                                        date: new Date().toLocaleString()
+                                        donor_name: don.donor_name || self.donorName,
+                                        donor_email: don.donor_email || self.donorEmail,
+                                        amount: don.formatted_amount || don.amount || ('₹' + Number(self.amount).toLocaleString()),
+                                        payment_method: don.payment_method || 'Razorpay Online',
+                                        payment_id: don.payment_id || don.razorpay_payment_id || response.razorpay_payment_id || 'N/A',
+                                        order_id: don.order_id || orderData.order_id || 'N/A',
+                                        date: don.date || new Date().toLocaleString()
                                     };
                                     self.showReceipt = true;
                                     self.isProcessing = false;
@@ -628,6 +566,452 @@
                         this.isProcessing = false;
                         this.errorMessage = err.message || 'An error occurred while connecting to payment service.';
                     }
+                },
+
+                printReceipt() {
+                    const d = this.receiptData || {};
+                    const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                    
+                    const donorName = esc(d.donor_name || this.donorName || 'Supporter');
+                    const donorEmail = esc(d.donor_email || this.donorEmail || 'N/A');
+                    const paymentId = esc(d.payment_id || 'N/A');
+                    const orderId = esc(d.order_id || 'N/A');
+                    const paymentMethod = esc(d.payment_method || 'Razorpay Online');
+                    const amount = esc(d.amount || ('₹' + Number(this.amount || 0).toLocaleString()));
+                    const date = esc(d.date || new Date().toLocaleString());
+                    const logoUrl = "{{ asset('images/logo.png') }}";
+                    const contactEmail = esc("{{ $settings->contact_email ?? 'support@pocketsql.net' }}");
+
+                    let iframe = document.getElementById('receipt-print-iframe');
+                    if (!iframe) {
+                        iframe = document.createElement('iframe');
+                        iframe.id = 'receipt-print-iframe';
+                        iframe.style.position = 'fixed';
+                        iframe.style.right = '0';
+                        iframe.style.bottom = '0';
+                        iframe.style.width = '0';
+                        iframe.style.height = '0';
+                        iframe.style.border = '0';
+                        iframe.style.visibility = 'hidden';
+                        document.body.appendChild(iframe);
+                    }
+
+                    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Donation Receipt - ${paymentId}</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 12mm 15mm;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #0f172a;
+            background: #ffffff;
+            font-size: 11px;
+            line-height: 1.4;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .sheet {
+            max-width: 680px;
+            margin: 0 auto;
+            border: 1.5px solid #1e293b;
+            border-radius: 4px;
+            padding: 22px 26px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 12px;
+        }
+        .brand-col {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-img {
+            width: 44px;
+            height: 44px;
+            max-width: 44px;
+            max-height: 44px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid #cbd5e1;
+            display: block;
+        }
+        .brand-title {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+        .brand-title span {
+            color: #2563eb;
+        }
+        .brand-sub {
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #334155;
+            margin-top: 2px;
+        }
+        .brand-meta {
+            font-size: 9px;
+            color: #64748b;
+            font-family: monospace;
+            margin-top: 2px;
+        }
+        .ref-col {
+            text-align: right;
+        }
+        .badge-receipt {
+            display: inline-block;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 3px 9px;
+            font-size: 9.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+        .ref-item {
+            font-size: 10px;
+            color: #475569;
+            font-family: monospace;
+            line-height: 1.35;
+        }
+        .ref-item strong {
+            color: #0f172a;
+        }
+        .banner {
+            margin-top: 12px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .banner-title {
+            font-size: 10.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #0f172a;
+        }
+        .banner-sub {
+            font-size: 9px;
+            color: #64748b;
+            margin-top: 1px;
+        }
+        .badge-verified {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .box {
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 9px 12px;
+            background: #ffffff;
+        }
+        .box-title {
+            font-size: 9.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #475569;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 4px;
+            margin-bottom: 5px;
+        }
+        .box table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+        .box td {
+            padding: 2.5px 0;
+            vertical-align: top;
+        }
+        .box td.lbl {
+            width: 90px;
+            color: #64748b;
+        }
+        .box td.val {
+            color: #0f172a;
+            font-weight: 600;
+        }
+        .box td.val.mono {
+            font-family: monospace;
+            font-size: 9.5px;
+        }
+        .table-wrap {
+            margin-top: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        table.items {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+        table.items thead th {
+            background: #f1f5f9;
+            border-bottom: 1.5px solid #cbd5e1;
+            padding: 6px 10px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #1e293b;
+        }
+        table.items thead th.border-r, table.items tbody td.border-r, table.items tfoot td.border-r {
+            border-right: 1px solid #cbd5e1;
+        }
+        table.items tbody td {
+            padding: 8px 10px;
+            vertical-align: middle;
+        }
+        table.items tfoot td {
+            padding: 5px 10px;
+        }
+        .total-row {
+            background: #f8fafc;
+            border-top: 1.5px solid #94a3b8;
+            font-weight: 800;
+            font-size: 11px;
+        }
+        .total-amount {
+            font-family: monospace;
+            font-size: 13px;
+            font-weight: 900;
+            color: #0f172a;
+            text-decoration: underline double;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr;
+            gap: 14px;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+            align-items: center;
+        }
+        .mission {
+            font-size: 9px;
+            color: #475569;
+            line-height: 1.35;
+        }
+        .mission strong {
+            color: #0f172a;
+            font-size: 9.5px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .mission-contact {
+            margin-top: 3px;
+            font-family: monospace;
+            font-size: 8.5px;
+            color: #64748b;
+        }
+        .seal-box {
+            border: 1.5px solid #0f172a;
+            background: #f8fafc;
+            border-radius: 4px;
+            padding: 7px 9px;
+            text-align: center;
+        }
+        .seal-title {
+            font-size: 9px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #0f172a;
+            font-family: monospace;
+        }
+        .seal-sub {
+            font-size: 8px;
+            color: #15803d;
+            font-weight: 800;
+            margin-top: 2px;
+        }
+        .seal-meta {
+            font-size: 7px;
+            color: #64748b;
+            font-family: monospace;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sheet">
+        <div class="header">
+            <div class="brand-col">
+                <img src="${logoUrl}" alt="PocketSQL" class="logo-img" width="44" height="44">
+                <div>
+                    <div class="brand-title">Pocket<span>SQL</span></div>
+                    <div class="brand-sub">PocketSQL Open Source Project</div>
+                    <div class="brand-meta">https://pocketsql.prahlix.com • MIT Licensed • Made in India</div>
+                </div>
+            </div>
+            <div class="ref-col">
+                <div class="badge-receipt">Donation Receipt</div>
+                <div class="ref-item">Payment Ref: <strong>${paymentId}</strong></div>
+                <div class="ref-item">Date: <strong>${date}</strong></div>
+            </div>
+        </div>
+
+        <div class="banner">
+            <div>
+                <div class="banner-title">Official Contribution Voucher &amp; Acknowledgment Slip</div>
+                <div class="banner-sub">Issued electronically upon successful online transaction verification.</div>
+            </div>
+            <div class="badge-verified">
+                ✓ Payment Verified
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="box">
+                <div class="box-title">Contributor Information</div>
+                <table>
+                    <tr>
+                        <td class="lbl">Full Name:</td>
+                        <td class="val">${donorName}</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">Email Address:</td>
+                        <td class="val mono">${donorEmail}</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">Category:</td>
+                        <td class="val">Community Backer &amp; Sponsor</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="box">
+                <div class="box-title">Transaction &amp; Gateway Details</div>
+                <table>
+                    <tr>
+                        <td class="lbl">Payment ID:</td>
+                        <td class="val mono">${paymentId}</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">Order ID:</td>
+                        <td class="val mono">${orderId}</td>
+                    </tr>
+                    <tr>
+                        <td class="lbl">Payment Method:</td>
+                        <td class="val mono">${paymentMethod}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="items">
+                <thead>
+                    <tr>
+                        <th style="width: 32px; text-align: center;" class="border-r">#</th>
+                        <th style="text-align: left;" class="border-r">Description of Contribution</th>
+                        <th style="width: 95px; text-align: center;" class="border-r">Type</th>
+                        <th style="width: 105px; text-align: right;">Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center; font-family: monospace; color: #64748b;" class="border-r">01</td>
+                        <td class="border-r">
+                            <div style="font-weight: 700; color: #0f172a; font-size: 10.5px;">PocketSQL Android Engine Sponsorship</div>
+                            <div style="font-size: 9px; color: #64748b; margin-top: 2px;">
+                                Voluntary contribution directly supporting native Android SQL embedded runtime optimization, continuous integration testing devices, and zero-tracking release builds.
+                            </div>
+                        </td>
+                        <td style="text-align: center; font-family: monospace; color: #475569;" class="border-r">Direct Sponsor</td>
+                        <td style="text-align: right; font-family: monospace; font-weight: 800; font-size: 11px; color: #0f172a;">${amount}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr style="background: #f8fafc; border-top: 1px solid #cbd5e1;">
+                        <td colspan="3" style="text-align: right; color: #475569;" class="border-r">Subtotal:</td>
+                        <td style="text-align: right; font-family: monospace; font-weight: 700; color: #0f172a;">${amount}</td>
+                    </tr>
+                    <tr style="background: #f8fafc; border-top: 1px solid #e2e8f0;">
+                        <td colspan="3" style="text-align: right; color: #475569;" class="border-r">Processing &amp; Gateway Fees:</td>
+                        <td style="text-align: right; font-family: monospace; font-weight: 700; color: #166534;">₹0.00 (Waived)</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="3" style="text-align: right; text-transform: uppercase; letter-spacing: 0.5px; color: #0f172a;" class="border-r">Total Amount Received:</td>
+                        <td style="text-align: right;" class="total-amount">${amount}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="footer-grid">
+            <div class="mission">
+                <strong>Thank you for powering independent open-source software!</strong>
+                PocketSQL is built with zero cloud tracking and 100% offline-first principles. 100% of community contributions are utilized for hardware testing and maintaining open-source releases.
+                <div class="mission-contact">
+                    Project Contact: ${contactEmail} • https://pocketsql.prahlix.com
+                </div>
+            </div>
+
+            <div>
+                <div class="seal-box">
+                    <div class="seal-title">Authenticated Voucher</div>
+                    <div class="seal-sub">Secured by Razorpay • Verified</div>
+                    <div class="seal-meta">Electronically Generated • No Physical Signature Required</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+                    const doc = iframe.contentWindow.document;
+                    doc.open();
+                    doc.write(html);
+                    doc.close();
+
+                    setTimeout(() => {
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+                    }, 250);
                 }
             };
         }

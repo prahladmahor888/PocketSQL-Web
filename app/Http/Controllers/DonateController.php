@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppSetting;
 use App\Models\Donation;
 use App\Models\DonationMethod;
+use App\Models\DonationTier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -24,6 +25,7 @@ class DonateController extends Controller
         $donorCount = Donation::successful()->count();
         $recentDonations = Donation::successful()->latest()->take(6)->get();
         $donationMethods = DonationMethod::where('is_active', true)->orderBy('sort_order')->get();
+        $donationTiers = DonationTier::where('is_active', true)->orderBy('sort_order')->orderBy('amount')->get();
 
         return view('pages.donate', compact(
             'settings',
@@ -32,7 +34,8 @@ class DonateController extends Controller
             'totalRaised',
             'donorCount',
             'recentDonations',
-            'donationMethods'
+            'donationMethods',
+            'donationTiers'
         ));
     }
 
@@ -131,6 +134,7 @@ class DonateController extends Controller
             'order_id' => $orderId,
             'key_id' => $keyId,
             'amount' => $amountInPaise,
+            'amount_paise' => $amountInPaise,
             'currency' => 'INR',
             'donation_id' => $donation->id,
             'donor_name' => $donation->donor_name,
@@ -153,12 +157,34 @@ class DonateController extends Controller
 
         $request->validate([
             'donation_id' => 'required|integer|exists:donations,id',
-            'razorpay_payment_id' => 'required|string',
-            'razorpay_order_id' => 'required|string',
-            'razorpay_signature' => 'required|string',
+            'razorpay_payment_id' => 'required|string|max:100',
+            'razorpay_order_id' => 'required|string|max:100',
+            'razorpay_signature' => 'required|string|max:255',
         ]);
 
         $donation = Donation::findOrFail($request->donation_id);
+
+        // 1. Replay Attack Prevention: Payment ID must be unique across all successful donations
+        $alreadyUsed = Donation::where('razorpay_payment_id', $request->razorpay_payment_id)
+            ->where('status', 'successful')
+            ->where('id', '!=', $donation->id)
+            ->exists();
+
+        if ($alreadyUsed) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Security Alert: This payment transaction has already been verified and processed.',
+            ], 409);
+        }
+
+        // 2. Order Tampering Check: Verify order ID matches record on file
+        if ($donation->razorpay_order_id !== $request->razorpay_order_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Security Alert: Payment order mismatch. Transaction rejected.',
+            ], 422);
+        }
+
         $settings = AppSetting::instance();
         $keyId = $settings->razorpay_key_id ?: config('services.razorpay.key_id');
         $keySecret = $settings->razorpay_key_secret ?: config('services.razorpay.key_secret');
@@ -195,7 +221,14 @@ class DonateController extends Controller
                 }
             }
         } else {
-            // Verified in demo mode or test sandbox
+            // Demo mode is strictly restricted to local or testing environments
+            if (app()->isProduction()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Payment gateway is currently not configured for live verification. Please contact support.',
+                ], 503);
+            }
+
             $isValid = true;
             $paymentMethod = $request->input('payment_method', 'UPI / Card (Test)');
         }
@@ -216,7 +249,10 @@ class DonateController extends Controller
                     'donor_name' => $donation->donor_name,
                     'donor_email' => $donation->donor_email,
                     'amount' => $donation->formatted_amount,
+                    'formatted_amount' => $donation->formatted_amount,
+                    'raw_amount' => $donation->amount,
                     'payment_id' => $donation->razorpay_payment_id,
+                    'razorpay_payment_id' => $donation->razorpay_payment_id,
                     'order_id' => $donation->razorpay_order_id,
                     'payment_method' => $donation->payment_method,
                     'date' => $donation->formatted_date,

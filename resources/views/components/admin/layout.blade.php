@@ -150,35 +150,65 @@
                                     <span>{{ $unreadCount }} new</span>
                                 </span>
                             @else
-                                <span class="text-[10px] px-2 py-0.5 rounded-[6px] font-mono font-bold {{ Route::is('admin.messages*') ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600' }}">
-                                    {{ \App\Models\ContactMessage::count() }}
-                                </span>
-                            @endif
-                        <!-- Community Donations -->
-                        <a href="{{ route('admin.donations.index') }}" 
-                           class="group flex items-center justify-between px-3 py-2.5 rounded-[10px] text-xs font-semibold transition {{ Route::is('admin.donations*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' }}">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 rounded-[8px] flex items-center justify-center text-xs transition {{ Route::is('admin.donations*') ? 'bg-white/20 text-white' : 'bg-rose-50 text-rose-600 group-hover:bg-rose-100' }}">
-                                    <i class="fa-solid fa-heart"></i>
-                                </div>
-                                <span>Donations</span>
-                            </div>
-                            <span class="text-[10px] px-2 py-0.5 rounded-[6px] font-mono font-bold {{ Route::is('admin.donations*') ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600' }}">
-                                {{ $donationCount }}
-                            </span>
-                        </a>
+                                    <span class="text-[10px] px-2 py-0.5 rounded-[6px] font-mono font-bold {{ Route::is('admin.messages*') ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600' }}">
+                                        {{ \App\Models\ContactMessage::count() }}
+                                    </span>
+                                @endif
+                            </a>
 
-                        <!-- Settings -->
-                        <a href="{{ route('admin.settings') }}" 
-                           class="group flex items-center justify-between px-3 py-2.5 rounded-[10px] text-xs font-semibold transition {{ Route::is('admin.settings') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' }}">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 rounded-[8px] flex items-center justify-center text-xs transition {{ Route::is('admin.settings') ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600 group-hover:bg-slate-200' }}">
-                                    <i class="fa-solid fa-sliders"></i>
+                            <!-- Community Donations -->
+                            <a href="{{ route('admin.donations.index') }}" 
+                               class="group flex items-center justify-between px-3 py-2.5 rounded-[10px] text-xs font-semibold transition {{ Route::is('admin.donations*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' }}">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-[8px] flex items-center justify-center text-xs transition {{ Route::is('admin.donations*') ? 'bg-white/20 text-white' : 'bg-rose-50 text-rose-600 group-hover:bg-rose-100' }}">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </div>
+                                    <span>Donations</span>
                                 </div>
-                                <span>Site Settings</span>
-                            </div>
-                            <i class="fa-solid fa-chevron-right text-[10px] transition group-hover:translate-x-0.5 {{ Route::is('admin.settings') ? 'text-white/70' : 'text-slate-300' }}"></i>
-                        </a>
+                                <span class="text-[10px] px-2 py-0.5 rounded-[6px] font-mono font-bold {{ Route::is('admin.donations*') ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600' }}">
+                                    {{ $donationCount }}
+                                </span>
+                            </a>
+
+                            <!-- Donation Preset Cards -->
+                            <a href="{{ route('admin.donation-tiers.index') }}" 
+                               class="group flex items-center justify-between px-3 py-2.5 rounded-[10px] text-xs font-semibold transition {{ Route::is('admin.donation-tiers*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' }}">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-[8px] flex items-center justify-center text-xs transition {{ Route::is('admin.donation-tiers*') ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100' }}">
+                                        <i class="fa-solid fa-layer-group"></i>
+                                    </div>
+                                    <span>Donation Cards</span>
+                                </div>
+                                <span class="text-[10px] px-2 py-0.5 rounded-[6px] font-mono font-bold {{ Route::is('admin.donation-tiers*') ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600' }}">
+                                    {{ \App\Models\DonationTier::count() }}
+                                </span>
+                            </a>
+
+                            <!-- Social Links & Icons -->
+                            <a href="{{ route('admin.social-links.index') }}" 
+                               class="group flex items-center justify-between px-3 py-2.5 rounded-[10px] text-xs font-semibold transition {{ Route::is('admin.social-links*') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' }}">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-[8px] flex items-center justify-center text-xs transition {{ Route::is('admin.social-links*') ? 'bg-white/20 text-white' : 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-100' }}">
+                                        <i class="fa-solid fa-share-nodes"></i>
+                                    </div>
+                                    <span>Social Links</span>
+                                </div>
+                                <span class="text-[10px] px-2 py-0.5 rounded-[6px] font-mono font-bold {{ Route::is('admin.social-links*') ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600' }}">
+                                    {{ \App\Models\SocialLink::count() }}
+                                </span>
+                            </a>
+
+                            <!-- Settings -->
+                            <a href="{{ route('admin.settings') }}" 
+                               class="group flex items-center justify-between px-3 py-2.5 rounded-[10px] text-xs font-semibold transition {{ Route::is('admin.settings') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' }}">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-[8px] flex items-center justify-center text-xs transition {{ Route::is('admin.settings') ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600 group-hover:bg-slate-200' }}">
+                                        <i class="fa-solid fa-sliders"></i>
+                                    </div>
+                                    <span>Site Settings</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-[10px] transition group-hover:translate-x-0.5 {{ Route::is('admin.settings') ? 'text-white/70' : 'text-slate-300' }}"></i>
+                            </a>
 
                         <!-- Traffic Manager & Handler -->
                         <a href="{{ route('admin.traffic.index') }}" 

@@ -4,9 +4,11 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\DonationController as AdminDonationController;
+use App\Http\Controllers\Admin\DonationTierController as AdminDonationTierController;
 use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\ReleaseController as AdminReleaseController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\SocialLinkController as AdminSocialLinkController;
 use App\Http\Controllers\Admin\TrafficController as AdminTrafficController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DocController;
@@ -97,4 +99,18 @@ Route::prefix('admin')->middleware(['auth', 'admin.timeout'])->name('admin.')->g
     Route::get('/donations', [AdminDonationController::class, 'index'])->name('donations.index');
     Route::match(['delete', 'post'], '/donations/{donation}/delete', [AdminDonationController::class, 'destroy'])->name('donations.destroy.post');
     Route::match(['delete', 'post'], '/donations/{donation}', [AdminDonationController::class, 'destroy'])->name('donations.destroy');
+
+    // Donation Amount Cards & Tiers (Dynamic)
+    Route::get('/donation-tiers', [AdminDonationTierController::class, 'index'])->name('donation-tiers.index');
+    Route::post('/donation-tiers', [AdminDonationTierController::class, 'store'])->name('donation-tiers.store');
+    Route::match(['put', 'post', 'patch'], '/donation-tiers/{donationTier}', [AdminDonationTierController::class, 'update'])->name('donation-tiers.update');
+    Route::match(['delete', 'post'], '/donation-tiers/{donationTier}/delete', [AdminDonationTierController::class, 'destroy'])->name('donation-tiers.destroy.post');
+    Route::match(['delete', 'post'], '/donation-tiers/{donationTier}', [AdminDonationTierController::class, 'destroy'])->name('donation-tiers.destroy');
+
+    // Social Links & Icons (Dynamic)
+    Route::get('/social-links', [AdminSocialLinkController::class, 'index'])->name('social-links.index');
+    Route::post('/social-links', [AdminSocialLinkController::class, 'store'])->name('social-links.store');
+    Route::match(['put', 'post', 'patch'], '/social-links/{socialLink}', [AdminSocialLinkController::class, 'update'])->name('social-links.update');
+    Route::match(['delete', 'post'], '/social-links/{socialLink}/delete', [AdminSocialLinkController::class, 'destroy'])->name('social-links.destroy.post');
+    Route::match(['delete', 'post'], '/social-links/{socialLink}', [AdminSocialLinkController::class, 'destroy'])->name('social-links.destroy');
 });

@@ -17,6 +17,11 @@ class AppSetting extends Model
         'github_repo_url',
         'documentation_url',
         'contact_email',
+        'contact_phone',
+        'contact_address',
+        'support_hours',
+        'discord_url',
+        'telegram_url',
         'release_notes',
         'api_server_active',
         'total_downloads_count',
@@ -39,6 +44,7 @@ class AppSetting extends Model
         'admin_login_max_attempts' => 'integer',
         'admin_session_lifetime_minutes' => 'integer',
         'razorpay_enabled' => 'boolean',
+        'razorpay_key_secret' => 'encrypted',
         'min_donation_amount' => 'integer',
     ];
 

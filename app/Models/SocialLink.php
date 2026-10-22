@@ -22,4 +22,15 @@ class SocialLink extends Model
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    protected static function booted()
+    {
+        static::saved(function () {
+            cache()->forget('active_social_links_v1');
+        });
+
+        static::deleted(function () {
+            cache()->forget('active_social_links_v1');
+        });
+    }
 }

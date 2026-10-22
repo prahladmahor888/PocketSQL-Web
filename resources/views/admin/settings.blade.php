@@ -141,6 +141,71 @@
                                value="{{ old('contact_email', $settings->contact_email) }}"
                                class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 font-mono">
                     </div>
+
+                    <div class="space-y-1.5">
+                        <label for="contact_phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i class="fa-solid fa-phone text-slate-400 text-[11px]"></i>
+                            <span>Contact Phone / WhatsApp</span>
+                        </label>
+                        <input type="text" 
+                               id="contact_phone" 
+                               name="contact_phone" 
+                               placeholder="+91 98765 43210"
+                               value="{{ old('contact_phone', $settings->contact_phone) }}"
+                               class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 font-mono">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="support_hours" class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i class="fa-solid fa-clock text-slate-400 text-[11px]"></i>
+                            <span>Support Hours / Turnaround</span>
+                        </label>
+                        <input type="text" 
+                               id="support_hours" 
+                               name="support_hours" 
+                               placeholder="Mon - Fri, 9:00 AM - 6:00 PM IST (Response in 24-48h)"
+                               value="{{ old('support_hours', $settings->support_hours) }}"
+                               class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="space-y-1.5 sm:col-span-2">
+                        <label for="contact_address" class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i class="fa-solid fa-location-dot text-slate-400 text-[11px]"></i>
+                            <span>Operating / Office Address</span>
+                        </label>
+                        <input type="text" 
+                               id="contact_address" 
+                               name="contact_address" 
+                               placeholder="e.g. Bangalore, Karnataka, India"
+                               value="{{ old('contact_address', $settings->contact_address) }}"
+                               class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="discord_url" class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i class="fa-brands fa-discord text-slate-400 text-[11px]"></i>
+                            <span>Discord Server Invite URL</span>
+                        </label>
+                        <input type="text" 
+                               id="discord_url" 
+                               name="discord_url" 
+                               placeholder="https://discord.gg/pocketsql"
+                               value="{{ old('discord_url', $settings->discord_url) }}"
+                               class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 font-mono">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label for="telegram_url" class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i class="fa-brands fa-telegram text-slate-400 text-[11px]"></i>
+                            <span>Telegram Community Link</span>
+                        </label>
+                        <input type="text" 
+                               id="telegram_url" 
+                               name="telegram_url" 
+                               placeholder="https://t.me/pocketsql_official"
+                               value="{{ old('telegram_url', $settings->telegram_url) }}"
+                               class="w-full px-3.5 py-2.5 rounded-[8px] border border-slate-300 text-xs focus:ring-2 focus:ring-blue-500 font-mono">
+                    </div>
                 </div>
 
                 <!-- Documentation Link -->

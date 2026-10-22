@@ -27,6 +27,26 @@
                         <span>Donate</span>
                     </a>
                 </div>
+
+                @if(isset($activeSocialLinks) && $activeSocialLinks->isNotEmpty())
+                    <div class="pt-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Connect With Us:</span>
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            @foreach($activeSocialLinks as $social)
+                                <a href="{{ $social->url }}" target="_blank" rel="noopener" title="{{ $social->label }}"
+                                   class="w-7 h-7 rounded-[6px] bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-600 border border-slate-200 flex items-center justify-center transition text-xs shadow-2xs">
+                                    @if(str_starts_with(trim($social->icon_svg), '<svg'))
+                                        <span class="w-3.5 h-3.5 inline-flex items-center justify-center fill-current">{!! $social->icon_svg !!}</span>
+                                    @elseif(!empty($social->icon_svg))
+                                        <i class="{{ $social->icon_svg }} text-[11px]"></i>
+                                    @else
+                                        <i class="fa-brands fa-{{ strtolower($social->platform) }} text-[11px]"></i>
+                                    @endif
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <!-- Product Links -->
