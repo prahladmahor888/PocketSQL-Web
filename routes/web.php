@@ -35,8 +35,7 @@ Route::get('/download/apk/{release?}', [DownloadController::class, 'downloadApk'
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->middleware('throttle:5,1')->name('contact.submit');
 Route::get('/donate', [DonateController::class, 'index'])->name('donate');
-Route::post('/donate/order', [DonateController::class, 'createOrder'])->middleware('throttle:10,1')->name('donate.order');
-Route::post('/donate/verify', [DonateController::class, 'verifyPayment'])->middleware('throttle:10,1')->name('donate.verify');
+Route::post('/donate/record', [DonateController::class, 'recordPayment'])->middleware('throttle:10,1')->name('donate.record');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 Route::get('/privacy-policy', [LegalController::class, 'privacyPolicy'])->name('legal.privacy');
 Route::get('/terms', [LegalController::class, 'termsOfService'])->name('legal.terms');
