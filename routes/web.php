@@ -67,6 +67,7 @@ Route::prefix('admin')->middleware(['auth', 'admin.timeout'])->name('admin.')->g
     Route::delete('/traffic/unblock-ip/{blockedIp}', [AdminTrafficController::class, 'unblockIp'])->name('traffic.unblock_ip');
     Route::post('/traffic/update-rules', [AdminTrafficController::class, 'updateRules'])->name('traffic.update_rules');
     Route::post('/traffic/clear-logs', [AdminTrafficController::class, 'clearLogs'])->name('traffic.clear_logs');
+    Route::post('/traffic/clear-download-logs', [AdminTrafficController::class, 'clearDownloadLogs'])->name('traffic.clear_download_logs');
     Route::post('/traffic/reset-rate-limiters', [AdminTrafficController::class, 'resetRateLimiters'])->name('traffic.reset_rate_limiters');
 
     // Settings

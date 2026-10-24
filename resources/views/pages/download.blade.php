@@ -45,7 +45,7 @@
                         <span>•</span>
                         <span class="inline-flex items-center space-x-1 font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-[6px] border border-emerald-100">
                             <i class="fa-solid fa-download text-[10px] text-emerald-600"></i>
-                            <span>{{ number_format($latestRelease->downloads_count ?? 842) }} downloads</span>
+                            <span>{{ number_format($latestRelease->downloads_count ?? 0) }} downloads</span>
                         </span>
                     </div>
                 </div>

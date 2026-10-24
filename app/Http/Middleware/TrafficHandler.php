@@ -5,8 +5,12 @@ namespace App\Http\Middleware;
 use App\Models\AppSetting;
 use App\Models\BlockedIp;
 use App\Models\TrafficLog;
+use App\Services\DeviceDetectorService;
+use App\Services\GeoLocationService;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,7 +22,7 @@ class TrafficHandler
     public function handle(Request $request, Closure $next): Response
     {
         $startTime = microtime(true);
-        $ip = $request->ip() ?? '127.0.0.1';
+        $ip = GeoLocationService::getClientIp($request);
         $path = '/' . ltrim($request->path(), '/');
 
         // Ignore asset paths from flooding traffic logs
@@ -314,8 +318,18 @@ class TrafficHandler
     protected function recordTrafficLog(string $ip, string $method, string $path, int $status, ?string $ua, int $duration, bool $isBlocked): void
     {
         try {
+            $location = GeoLocationService::resolve($ip);
+            $device = DeviceDetectorService::parse($ua);
+
             TrafficLog::create([
                 'ip_address' => $ip,
+                'city' => $location['city'] ?? null,
+                'state' => $location['region'] ?? null,
+                'country' => $location['country'] ?? null,
+                'country_code' => $location['countryCode'] ?? null,
+                'device_type' => $device['device_type'] ?? null,
+                'os' => $device['os'] ?? null,
+                'browser' => $device['browser'] ?? null,
                 'method' => substr($method, 0, 10),
                 'path' => substr($path, 0, 500),
                 'status_code' => $status,

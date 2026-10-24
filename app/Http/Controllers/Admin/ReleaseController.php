@@ -27,7 +27,7 @@ class ReleaseController extends Controller
             'changelog' => 'required|string',
             'download_url' => 'nullable|string',
             'is_latest' => 'nullable|boolean',
-            'apk_file' => 'nullable|file|max:102400',
+            'apk_file' => 'nullable|file|max:102400|mimes:apk,zip',
         ]);
 
         $downloadUrl = $validated['download_url'] ?? '/download/apk';

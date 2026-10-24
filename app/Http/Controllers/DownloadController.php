@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\AppSetting;
 use App\Models\DownloadLog;
 use App\Models\Release;
+use App\Services\DeviceDetectorService;
+use App\Services\GeoLocationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -18,10 +20,7 @@ class DownloadController extends Controller
         $pageData = cache()->remember('download_page_data_v1', 300, function () use ($settings) {
             $latestRelease = Release::where('is_latest', true)->first() ?? Release::orderBy('id', 'desc')->first();
             $previousReleases = Release::where('is_latest', false)->orderBy('id', 'desc')->get();
-            $totalDownloads = Release::sum('downloads_count');
-            if ($totalDownloads < ($settings->total_downloads_count ?? 0)) {
-                $totalDownloads = $settings->total_downloads_count;
-            }
+            $totalDownloads = max((int) Release::sum('downloads_count'), (int) DownloadLog::count(), (int) ($settings->total_downloads_count ?? 0));
 
             return compact('latestRelease', 'previousReleases', 'totalDownloads');
         });
@@ -45,7 +44,12 @@ class DownloadController extends Controller
 
         // Server-side download count tracking: 1 request = 1 count
         if ($targetRelease) {
-            DB::transaction(function () use ($targetRelease, $request) {
+            $clientIp = GeoLocationService::getClientIp($request);
+            $location = GeoLocationService::resolve($clientIp);
+            $ua = (string) $request->userAgent();
+            $device = DeviceDetectorService::parse($ua);
+
+            DB::transaction(function () use ($targetRelease, $clientIp, $location, $ua, $device) {
                 // Increment release downloads count
                 $targetRelease->increment('downloads_count');
                 
@@ -53,12 +57,19 @@ class DownloadController extends Controller
                 $settings = AppSetting::instance();
                 $settings->increment('total_downloads_count');
 
-                // Record detailed log entry
+                // Record detailed log entry with IP, location, flag, and device
                 DownloadLog::create([
                     'release_id' => $targetRelease->id,
                     'version' => $targetRelease->version,
-                    'ip_address' => $request->ip(),
-                    'user_agent' => substr((string) $request->userAgent(), 0, 500),
+                    'ip_address' => $clientIp,
+                    'city' => $location['city'] ?? null,
+                    'state' => $location['region'] ?? null,
+                    'country' => $location['country'] ?? null,
+                    'country_code' => $location['countryCode'] ?? null,
+                    'device_type' => $device['device_type'] ?? null,
+                    'os' => $device['os'] ?? null,
+                    'browser' => $device['browser'] ?? null,
+                    'user_agent' => substr($ua, 0, 500),
                 ]);
             });
         }
@@ -66,9 +77,13 @@ class DownloadController extends Controller
         // 1. Check if the targeted release has a specific uploaded APK file
         if ($targetRelease && $targetRelease->download_url && str_starts_with($targetRelease->download_url, '/downloads/')) {
             $releaseApkPath = public_path(ltrim($targetRelease->download_url, '/'));
-            if (file_exists($releaseApkPath)) {
-                $filename = 'PocketSQL-' . $targetRelease->version . '.apk';
-                return response()->download($releaseApkPath, $filename, [
+            $downloadsBase = realpath(public_path('downloads'));
+            $realApkPath = realpath($releaseApkPath);
+
+            // Path traversal protection: Ensure file exists and is strictly inside public/downloads directory
+            if ($realApkPath && $downloadsBase && str_starts_with($realApkPath, $downloadsBase) && file_exists($realApkPath)) {
+                $filename = 'PocketSQL-' . preg_replace('/[^a-zA-Z0-9._-]/', '', $targetRelease->version) . '.apk';
+                return response()->download($realApkPath, $filename, [
                     'Content-Type' => 'application/vnd.android.package-archive',
                     'Cache-Control' => 'no-store, no-cache, must-revalidate',
                 ]);

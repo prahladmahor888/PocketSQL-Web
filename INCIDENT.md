@@ -1,101 +1,91 @@
 # PocketSQL Security Incident Response Playbook (`INCIDENT.md`)
 
-This playbook defines emergency response steps for the PocketSQL portal (`pocketsql.prahlix.com`). Keep this document updated and execute immediately upon any suspected breach or vulnerability notification.
+This playbook outlines immediate containment, forensic, and recovery procedures for the PocketSQL application in the event of an unauthorized access, data breach, or security incident.
 
 ---
 
-## 1. Emergency Contact & Roles
+## 1. Immediate Threat Containment (P0 — Within 5 Minutes)
 
-* **Primary Security Lead**: Prahlix Core Operations Team (`security@prahlix.com`)
-* **General Incident Inbox**: `support@pocketsql.prahlix.com`
-* **Escalation Notification**: Telegram/WhatsApp emergency internal broadcast channel.
-
----
-
-## 2. Step 1: Immediate Session & Access Revocation
-
-If an admin account is compromised or active unauthorized sessions are detected:
-
-### A. Terminate All Active Sessions Immediately
-Run via SSH/Terminal on the production server:
+### Step 1: Revoke All Active Sessions Immediately
+If an admin credential or session has been compromised, terminate all sessions across the platform:
 ```bash
-# Truncate active session records from database (forces all users/admins to re-authenticate)
-php artisan session:table
+# If using database sessions:
+php artisan session:clear
+
+# Or truncate sessions table directly in SQLite:
 php artisan tinker --execute="DB::table('sessions')->truncate();"
+
+# Force invalidate all encrypted cookies by rotating APP_KEY:
+php artisan key:generate
 ```
 
-### B. Invalidate and Rotate Application Key
-If `APP_KEY` was exposed or cookies compromised:
+### Step 2: Emergency Lockout of the Admin Portal
+Temporarily block all administrative logins without taking down the public site:
 ```bash
-# Invalidate all encrypted cookies and existing session tokens
-php artisan key:generate --force
-php artisan config:clear
-php artisan cache:clear
+# Set maintenance mode on admin prefix or restrict admin via Traffic Handler
+php artisan down --secret="emergency-recovery-token"
 ```
 
-### C. Reset Admin Credentials
+### Step 3: Block Attacker IPs Immediately
 ```bash
-php artisan tinker --execute="\$admin = \App\Models\User::where('email', 'admin@pocketsql.prahlix.com')->first(); if (\$admin) { \$admin->password = bcrypt('NEW_SECURE_RANDOMLY_GENERATED_PASSWORD_16+'); \$admin->save(); }"
+# Blacklist offending IP via artisan tinker:
+php artisan tinker --execute="App\Models\BlockedIp::blockIp('ATTACKER_IP', 'Manual Incident Containment', 720);"
 ```
 
 ---
 
-## 3. Step 2: Secret & Credential Rotation Matrix
+## 2. Secret & Credential Rotation Checklist
 
-If server credentials or keys are leaked:
+Execute this checklist sequentially if any repository secret, `.env` file, or server access is suspected to be exposed:
 
-| Secret | Rotation Command / Location | Impact |
-| :--- | :--- | :--- |
-| **`APP_KEY`** | `php artisan key:generate --force` | Logs out all users, invalidates all sessions and encrypted cookies |
-| **Database Credentials** | Update `.env` `DB_PASSWORD` & reload web server | Disconnects any unauthorized direct database sessions |
-| **Mail / SMTP Secrets** | Regenerate password in mail provider panel & update `.env` | Prevents unauthorized email relaying |
-| **Google Play / Keystore** | Keep keystore file off web servers; rotate API service account keys | Protects official Android APK publishing integrity |
-
----
-
-## 4. Step 3: Malicious Traffic & IP Containment
-
-To immediately block an active attacking IP or subnet:
-
-### A. Via PocketSQL Traffic Shield UI
-1. Log in to `https://pocketsql.prahlix.com/admin/traffic`
-2. Under **Quick IP Restriction**, enter the offending IP address.
-3. Select duration (24h / 7d / Permanent) and click **Restrict IP**.
-
-### B. Via Terminal / Tinker
-```bash
-php artisan tinker --execute="\App\Models\BlockedIp::blockIp('ATTACKER_IP', 'Emergency manual containment', 72);"
-```
-
-### C. Server Firewall (UFW / Nginx)
-```bash
-sudo ufw insert 1 deny from ATTACKER_IP to any
-```
-
----
-
-## 5. Step 4: Notification Obligations & Timelines
-
-* **India DPDP Act (2023) / CERT-In**:
-  * Mandatory cybersecurity incidents must be reported to **CERT-In** (Indian Computer Emergency Response Team) within **6 hours** of noticing the incident (email: `incident@cert-in.org.in`).
-* **GDPR (EU Citizens)**:
-  * If personal data of EU users is affected, report to the relevant Data Protection Authority (DPA) within **72 hours**.
-* **User Notification**:
-  * If user email or contact submissions were exposed, send a plain-language advisory detailing:
-    1. What happened.
-    2. What data was affected (passwords are bcrypt-hashed).
-    3. What actions were taken to secure the system.
-    4. Recommended steps (e.g. password resets).
-
----
-
-## 6. Post-Incident Review
-1. Export traffic logs for forensics: `php artisan tinker --execute="file_put_contents('storage/logs/breach_audit.json', json_encode(\App\Models\TrafficLog::where('created_at', '>=', now()->subDays(2))->get()));"`
-2. Close exploited attack vector.
-3. Restore clean backup if files were modified:
+1. **Application Encryption Key (`APP_KEY`)**:
    ```bash
-   # Restore sqlite database from backup
-   cp storage/backups/pocketsql_clean.sqlite database/database.sqlite
+   php artisan key:generate
+   php artisan config:clear
    php artisan cache:clear
    ```
-4. Document root cause and deploy preventive regression tests.
+2. **Admin Account Password**:
+   ```bash
+   php artisan tinker --execute="App\Models\User::where('email', 'admin@pocketsql.app')->first()->update(['password' => bcrypt('NEW_HIGH_ENTROPY_PASSWORD')]);"
+   ```
+3. **Database Credentials**:
+   * Rotate password in hosting control panel (Hostinger/cPanel/VPS).
+   * Update `DB_PASSWORD` in `.env`.
+4. **Payment Gateway Credentials (UPI / Razorpay)**:
+   * Revoke existing `RAZORPAY_KEY_SECRET` in Razorpay Dashboard -> Settings -> API Keys.
+   * Generate new key pair and update `.env`.
+5. **Git Repository Sanitization**:
+   * If any secret was committed to Git history, rotate the key in the upstream provider immediately. *Deleting the line in git does not revoke the compromised secret.*
+
+---
+
+## 3. Forensic Evidence Preservation
+
+Before rebooting, restoring backups, or modifying files, preserve the evidence chain:
+1. **Preserve Traffic & Security Logs**:
+   * Export the SQLite database containing `traffic_logs`, `download_logs`, and `blocked_ips`:
+   ```bash
+   cp database/database.sqlite database/forensic_backup_$(date +%Y%m%d_%H%M%S).sqlite
+   ```
+2. **Export Web Server & System Logs**:
+   * Archive `storage/logs/laravel.log`.
+   * Archive Apache/Nginx access and error logs.
+
+---
+
+## 4. Breach Notification Obligations & Regulatory Reporting
+
+* **CERT-In (India)**:
+  * Under Indian Cybersecurity Regulations, cyber incidents (data breach, unauthorized system access, website defacement) must be reported to **CERT-In** (`incident@cert-in.org.in`) within **6 hours** of notice.
+* **India Digital Personal Data Protection (DPDP) Act, 2023**:
+  * Obligation to notify the Data Protection Board of India and affected data principals regarding personal data breaches.
+* **GDPR (For European users if applicable)**:
+  * Mandatory supervisory authority notification within **72 hours** under Article 33.
+
+---
+
+## 5. Security Contacts & Escalation
+
+* **PocketSQL Engineering Lead**: `prahladmahor888@gmail.com`
+* **Application Security / Support**: `support@pocketsql.app`
+* **Emergency Hostinger / VPS Provider Support**: Hostinger Emergency Console

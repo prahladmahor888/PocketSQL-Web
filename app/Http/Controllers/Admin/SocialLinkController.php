@@ -36,23 +36,9 @@ class SocialLinkController extends Controller
         $validated['sort_order'] = (int) ($validated['sort_order'] ?? (SocialLink::max('sort_order') + 1));
         $validated['is_active'] = $request->has('is_active');
 
-        // Normalize icon: cleanly accept full FontAwesome class, shorthand, or plain name
+        // Normalize icon and sanitize against XSS
         $icon = trim($validated['icon_svg'] ?? '');
-        if (empty($icon)) {
-            $icon = 'fa-brands fa-' . $platform;
-        } elseif (!str_contains($icon, '<svg')) {
-            if (!str_contains($icon, ' ')) {
-                // If single token like "fa-instagram" or "instagram"
-                $clean = str_starts_with($icon, 'fa-') ? substr($icon, 3) : $icon;
-                $solids = ['globe', 'phone', 'envelope', 'mail', 'link', 'location', 'map', 'comment', 'chat', 'paper-plane', 'headset', 'share-nodes'];
-                if (in_array(strtolower($clean), $solids)) {
-                    $icon = 'fa-solid fa-' . (strtolower($clean) === 'mail' ? 'envelope' : strtolower($clean));
-                } else {
-                    $icon = 'fa-brands fa-' . strtolower($clean);
-                }
-            }
-        }
-        $validated['icon_svg'] = $icon;
+        $validated['icon_svg'] = $this->sanitizeIconSvg($icon, $platform);
 
         SocialLink::create($validated);
 
@@ -79,24 +65,41 @@ class SocialLinkController extends Controller
         $validated['is_active'] = $request->has('is_active');
 
         $icon = trim($validated['icon_svg'] ?? '');
-        if (empty($icon)) {
-            $icon = 'fa-brands fa-' . $platform;
-        } elseif (!str_contains($icon, '<svg')) {
-            if (!str_contains($icon, ' ')) {
-                $clean = str_starts_with($icon, 'fa-') ? substr($icon, 3) : $icon;
-                $solids = ['globe', 'phone', 'envelope', 'mail', 'link', 'location', 'map', 'comment', 'chat', 'paper-plane', 'headset', 'share-nodes'];
-                if (in_array(strtolower($clean), $solids)) {
-                    $icon = 'fa-solid fa-' . (strtolower($clean) === 'mail' ? 'envelope' : strtolower($clean));
-                } else {
-                    $icon = 'fa-brands fa-' . strtolower($clean);
-                }
-            }
-        }
-        $validated['icon_svg'] = $icon;
+        $validated['icon_svg'] = $this->sanitizeIconSvg($icon, $platform);
 
         $socialLink->update($validated);
 
         return redirect()->route('admin.social-links.index')->with('success', 'Social channel updated successfully.');
+    }
+
+    /**
+     * Sanitize SVG markup or convert class shorthand
+     */
+    protected function sanitizeIconSvg(string $icon, string $platform): string
+    {
+        if (empty($icon)) {
+            return 'fa-brands fa-' . $platform;
+        }
+
+        if (str_contains($icon, '<svg')) {
+            // Strip dangerous tags and javascript event handlers from SVG markup
+            $sanitized = preg_replace('/<\s*(script|iframe|object|embed|applet|meta|link)[^>]*>.*?<\s*\/\s*\1\s*>/is', '', $icon);
+            $sanitized = preg_replace('/<\s*(script|iframe|object|embed|applet|meta|link)[^>]*>/is', '', $sanitized);
+            $sanitized = preg_replace('/\s*on[a-zA-Z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $sanitized);
+            $sanitized = preg_replace('/\s*(href|xlink:href)\s*=\s*("javascript:[^"]*"|\'javascript:[^\']*\'|javascript:[^\s>]+)/i', '', $sanitized);
+            return trim($sanitized);
+        }
+
+        if (!str_contains($icon, ' ')) {
+            $clean = str_starts_with($icon, 'fa-') ? substr($icon, 3) : $icon;
+            $solids = ['globe', 'phone', 'envelope', 'mail', 'link', 'location', 'map', 'comment', 'chat', 'paper-plane', 'headset', 'share-nodes'];
+            if (in_array(strtolower($clean), $solids)) {
+                return 'fa-solid fa-' . (strtolower($clean) === 'mail' ? 'envelope' : strtolower($clean));
+            }
+            return 'fa-brands fa-' . strtolower($clean);
+        }
+
+        return $icon;
     }
 
     /**

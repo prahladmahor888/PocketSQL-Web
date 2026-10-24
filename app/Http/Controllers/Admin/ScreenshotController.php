@@ -22,16 +22,20 @@ class ScreenshotController extends Controller
             'subtitle' => 'nullable|string|max:255',
             'sort_order' => 'required|integer|min:0',
             'is_featured' => 'nullable|boolean',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:8192',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
             'image_path' => 'nullable|string|max:255',
         ]);
 
         $imagePath = $validated['image_path'] ?? null;
 
-        // Handle uploaded file
+        // Handle uploaded file securely
         if ($request->hasFile('image_file')) {
             $file = $request->file('image_file');
-            $filename = 'ss_' . time() . '_' . Str::random(6) . '.' . $file->getClientOriginalExtension();
+            $ext = strtolower($file->extension() ?: 'jpg');
+            if (!in_array($ext, ['jpeg', 'png', 'jpg', 'webp'], true)) {
+                $ext = 'jpg';
+            }
+            $filename = 'ss_' . time() . '_' . Str::random(12) . '.' . $ext;
             $destinationPath = public_path('images/screenshots');
             
             if (!file_exists($destinationPath)) {
@@ -70,10 +74,13 @@ class ScreenshotController extends Controller
     {
         $title = $screenshot->title;
         
-        // If file exists in local storage and was uploaded, optional cleanup
+        // Secure cleanup: Ensure file is strictly inside public/images/screenshots
         $fullPath = public_path(ltrim($screenshot->image_path, '/'));
-        if (str_contains($screenshot->image_path, 'ss_') && file_exists($fullPath)) {
-            @unlink($fullPath);
+        $screenshotsBase = realpath(public_path('images/screenshots'));
+        $realFullPath = realpath($fullPath);
+
+        if ($realFullPath && $screenshotsBase && str_starts_with($realFullPath, $screenshotsBase) && str_contains($screenshot->image_path, 'ss_') && file_exists($realFullPath)) {
+            @unlink($realFullPath);
         }
 
         $screenshot->delete();

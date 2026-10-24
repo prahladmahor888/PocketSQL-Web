@@ -17,6 +17,14 @@
     <!-- Local Compiled Tailwind CSS & Font Awesome Icons via Vite Bundle -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <!-- Chart.js for Admin Analytics Visualizations (Local Bundled + CDN Fallback) -->
+    <script src="{{ asset('js/chart.umd.min.js') }}"></script>
+    <script>
+        if (typeof Chart === 'undefined') {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js"><\/script>');
+        }
+    </script>
+
     <style>
         [x-cloak] {
             display: none !important;

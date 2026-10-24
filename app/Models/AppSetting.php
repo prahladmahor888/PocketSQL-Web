@@ -81,7 +81,7 @@ class AppSetting extends Model
                 'contact_email' => 'support@pocketsql.prahlix.com',
                 'release_notes' => 'PocketSQL v1.0.5 introduces native window functions, TLS 1.3 self-signed certificate generation on device, and 40+ MySQL system tables.',
                 'api_server_active' => true,
-                'total_downloads_count' => 1248, // Initial verified community baseline
+                'total_downloads_count' => 0,
                 'traffic_shield_enabled' => true,
                 'rate_limit_per_minute' => 120,
                 'admin_login_max_attempts' => 3,

@@ -20,10 +20,7 @@ class HomeController extends Controller
             $screenshots = Screenshot::where('is_featured', true)->orderBy('sort_order')->get();
             $codeSnippets = CodeSnippet::orderBy('sort_order')->get();
             $topFaqs = Faq::orderBy('sort_order')->take(8)->get();
-            $totalDownloads = Release::sum('downloads_count');
-            if ($totalDownloads < ($settings->total_downloads_count ?? 0)) {
-                $totalDownloads = $settings->total_downloads_count;
-            }
+            $totalDownloads = max((int) Release::sum('downloads_count'), (int) \App\Models\DownloadLog::count(), (int) ($settings->total_downloads_count ?? 0));
 
             return compact('latestRelease', 'screenshots', 'codeSnippets', 'topFaqs', 'totalDownloads');
         });
